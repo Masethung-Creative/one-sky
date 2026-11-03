@@ -240,3 +240,27 @@ main { width: 100%; }
 .vision-frame.is-static .frame-panel { position: static; }
 .frame-word-mask { display: inline-block; overflow: hidden; margin-bottom: -.14em; padding-bottom: .14em; vertical-align: top; }
 .frame-word { display: inline-block; transform-origin: 0 100%; }
+
+/* Small screens. */
+@media (max-width: 600px) {
+  .vision-frame::before, .vision-frame::after { height: 44px; background-size: 700px 100%; }
+  .frame-panel { padding-block: 60px; }
+  .frame-panel .sec-head { margin-bottom: 20px; }
+}
+@media (min-width: 601px) and (max-width: 1100px) {
+  .card-grid.five { display: flex; flex-wrap: wrap; justify-content: center; }
+  .card-grid.five .card { flex: 0 1 calc((100% - 32px) / 3); }
+}
+/* Short phones: the whole hero has to fit in one screen. */
+@media (max-width: 520px) and (max-height: 700px) {
+  .hero-inner { gap: 10px; padding-block: 16px 104px; }
+  .hero h1 { font-size: 2rem; }
+  .sub { font-size: 1rem; }
+  .btn-row { gap: 8px; }
+  .btn { min-height: 44px; padding-block: 6px; font-size: 1rem; }
+  .note { padding: 4px 12px; font-size: .85rem; }
+  .scroll-cue { display: none; }
+  .kids { width: min(62vw, 300px); }
+  .title-sun, .title-moon { display: none; }
+  .plane { width: 64px; }
+}
