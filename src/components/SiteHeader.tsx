@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import HomeLink from "./HomeLink";
 
 const NAV_LINKS = [
   { label: "The Course", href: "/#course" },
@@ -80,10 +81,10 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <div className="header-row">
-        <Link className="brand" aria-label="One Sky home" translate="no" href="/">
+        <HomeLink className="brand" aria-label="One Sky home" translate="no" onClick={() => setMenuOpen(false)}>
           <Image src="/one-sky-logo.png" alt="" width={52} height={40} priority />
           <span className="logo-text">One Sky</span>
-        </Link>
+        </HomeLink>
         <button
           type="button"
           className="menu-btn notranslate"

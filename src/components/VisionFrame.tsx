@@ -4,6 +4,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import { useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { SHORT_SCROLL } from "./HeroCourseScene";
 
 const STEPS = [
   ["Explore the Course", "See what’s inside and watch the free story preview with your child."],
@@ -75,6 +76,8 @@ type Span = { start: number; end: number; overflow: number };
 
 // The first set arrives while the frame scrolls into place, this many stage heights before it locks.
 const LEAD_IN = 0.7;
+// On phones the same timeline plays over this share of the distance, so each set takes about two swipes.
+const TOUCH_PACE = 0.55;
 const BODY_ITEMS = ".lead, .goal, .text-link, .step, .card";
 
 function FramePanel({ set, panelRef }: { set: (typeof SETS)[number]; panelRef: RefObject<HTMLDivElement | null> }) {
@@ -101,13 +104,16 @@ function AnimatedFrame() {
   const panels = [useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null), useRef<HTMLDivElement>(null)];
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const [stage, setStage] = useState(800);
+  const [pace, setPace] = useState(1);
   const [overflows, setOverflows] = useState([0, 0, 0]);
   const { scrollY } = useScroll();
+  // Scrolled pixels for one second of the timeline.
+  const beat = stage * pace;
 
   const spans: Span[] = [];
   let at = 0;
   overflows.forEach((overflow, i) => {
-    const length = (i === SETS.length - 1 ? stage * 0.8 : stage * 1.3) + overflow;
+    const length = (i === SETS.length - 1 ? beat * 0.8 : beat * 1.3) + overflow;
     spans.push({ start: at, end: at + length, overflow });
     at += length;
   });
@@ -118,8 +124,8 @@ function AnimatedFrame() {
     if (!track.current || !stageEl.current || !timeline.current) return;
     const stuckAt = parseFloat(getComputedStyle(stageEl.current).top) || 0;
     const scrolled = stuckAt - track.current.getBoundingClientRect().top;
-    timeline.current.time(Math.max(0, scrolled / stageEl.current.offsetHeight + LEAD_IN));
-  }, []);
+    timeline.current.time(Math.max(0, scrolled / (stageEl.current.offsetHeight * pace) + LEAD_IN));
+  }, [pace]);
   useMotionValueEvent(scrollY, "change", update);
 
   useEffect(() => {
@@ -127,6 +133,7 @@ function AnimatedFrame() {
       if (!stageEl.current) return;
       const height = stageEl.current.offsetHeight;
       setStage(height);
+      setPace(window.matchMedia(SHORT_SCROLL).matches ? TOUCH_PACE : 1);
       const next = panels.map((p) => Math.max(0, (p.current?.offsetHeight ?? 0) - height));
       setOverflows((old) => (old.join() === next.join() ? old : next));
     };
@@ -149,8 +156,8 @@ function AnimatedFrame() {
         const first = i === 0;
         const last = i === SETS.length - 1;
         const span = laidOut[i];
-        const start = first ? 0 : span.start / stage + LEAD_IN;
-        const end = span.end / stage + LEAD_IN;
+        const start = first ? 0 : span.start / beat + LEAD_IN;
+        const end = span.end / beat + LEAD_IN;
         const bodyAt = first ? 0.2 : start + 0.15;
         const settled = first ? LEAD_IN : start + 0.55;
         const eyebrow = panel.querySelector(".eyebrow");
@@ -172,7 +179,7 @@ function AnimatedFrame() {
         tl.to(items, { autoAlpha: 1, y: 0, duration: 0.28, ease: "power3.out", stagger: 0.05 }, bodyAt);
         if (cards.length) tl.to(cards, { scale: 1, rotate: 0, duration: 0.28, ease: "back.out(1.7)", stagger: 0.05 }, bodyAt);
         if (line) tl.to(line, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, bodyAt + 0.05);
-        if (span.overflow) tl.to(panel, { y: -span.overflow, duration: span.overflow / stage, ease: "none" }, settled);
+        if (span.overflow) tl.to(panel, { y: -span.overflow, duration: span.overflow / beat, ease: "none" }, settled);
 
         if (!last) {
           const leave = end - 0.3;
@@ -188,12 +195,12 @@ function AnimatedFrame() {
     update();
     return () => { timeline.current = null; ctx.revert(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spanKey, stage, update]);
+  }, [spanKey, beat, update]);
 
   return (
     <div className="frame-track" ref={track} style={{ height: stage + at }}>
       {SETS.map((set, i) => (
-        <span key={set.id} className="scene-anchor" id={set.id} style={{ top: i === 0 ? 0 : spans[i].start + stage * 0.62 }} />
+        <span key={set.id} className="scene-anchor" id={set.id} style={{ top: i === 0 ? 0 : spans[i].start + beat * 0.62 }} />
       ))}
       <div className="sec-sky vision-frame" ref={stageEl}>
         {SETS.map((set, i) => <FramePanel key={set.id} set={set} panelRef={panels[i]} />)}

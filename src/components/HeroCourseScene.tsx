@@ -26,6 +26,9 @@ const OUTCOMES = [
 
 // The scene lasts this many stage heights of scrolling, plus however much the course overflows the stage.
 const STAGE_SCREENS = 5;
+// A phone swipe moves about a third of the screen, far less than a laptop scroll. Over 2 screens each moment of the story takes about one swipe.
+const TOUCH_SCREENS = 2;
+export const SHORT_SCROLL = "(max-width: 1100px), (pointer: coarse)";
 // The dog's frame keeps this natural size and is scaled as a whole, because its artwork does not grow with the frame.
 const DOG_W = 360;
 const DOG_RATIO = 420 / 360;
@@ -36,9 +39,9 @@ const CLOUDS = [
 const TITLE = "AI Foundation";
 const WIDE_LAYOUT = "(min-width: 1241px)";
 
-type Layout = { stage: number; overflow: number; bigScale: number; bigX: number; bigY: number; dockX: number; dockY: number; dockScale: number; pinDog: boolean };
+type Layout = { stage: number; screens: number; overflow: number; bigScale: number; bigX: number; bigY: number; dockX: number; dockY: number; dockScale: number; pinDog: boolean };
 
-const START: Layout = { stage: 800, overflow: 0, bigScale: 1, bigX: 0, bigY: 0, dockX: 0, dockY: 0, dockScale: 1, pinDog: true };
+const START: Layout = { stage: 800, screens: STAGE_SCREENS, overflow: 0, bigScale: 1, bigX: 0, bigY: 0, dockX: 0, dockY: 0, dockScale: 1, pinDog: true };
 
 function mix(from: number, to: number, t: number) {
   return from + (to - from) * t;
@@ -121,6 +124,7 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
       const bigH = bigW * DOG_RATIO;
       const next: Layout = {
         stage: stageBox.height,
+        screens: window.matchMedia(SHORT_SCROLL).matches ? TOUCH_SCREENS : STAGE_SCREENS,
         overflow: Math.max(0, panel.current.offsetHeight - stageBox.height),
         bigScale: bigW / DOG_W,
         bigX: (stageBox.width - bigW) / 2,
@@ -138,7 +142,7 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
     return () => watcher.disconnect();
   }, []);
 
-  const base = layout.stage * STAGE_SCREENS;
+  const base = layout.stage * layout.screens;
   const { scrollYProgress } = useScroll({ target: track, offset: ["start 69px", "end end"] });
   // Scrolled pixels inside the scene.
   const px = useTransform(scrollYProgress, (p) => p * (base + layout.overflow));
@@ -154,9 +158,10 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
   const dogY = useTransform([dock, panelY], ([t, y]: number[]) => mix(layout.bigY, layout.dockY, t) + (layout.pinDog ? 0 : y));
   const dogScale = useTransform(dock, (t) => mix(layout.bigScale, layout.dockScale, t));
 
-  // Keeps what is hidden out of reach of the keyboard and starts the dog's animation only when it appears.
+  // Keeps what is hidden out of reach of the keyboard. The dog's game starts from the top once the clouds have covered the screen, and again each time they return.
   useMotionValueEvent(phase, "change", (v) => {
-    if (v > 0.42) setDogOn(true);
+    if (v >= 0.47) setDogOn(true);
+    else if (v < 0.44) setDogOn(false);
     titleIn.current?.progress(within(v, 0.84, 0.95));
     if (stage.current) {
       const vars = stage.current.style;
@@ -173,8 +178,9 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
   });
 
   return (
-    <div className="scene-track" ref={track} style={{ height: layout.stage * (STAGE_SCREENS + 1) + layout.overflow }}>
-      <span className="scene-anchor" id="course" style={{ top: layout.stage * STAGE_SCREENS * 0.96 }} />
+    <div className="scene-track" ref={track} style={{ height: base + layout.stage + layout.overflow }}>
+      <link rel="prefetch" href="/coco-reward.html" />
+      <span className="scene-anchor" id="course" style={{ top: base * 0.96 }} />
       <div className="scene-stage" ref={stage}>
         <div className="scene-hero" ref={heroLayer}>{hero}</div>
         <div className="scene-clouds" aria-hidden="true">

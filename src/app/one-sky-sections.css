@@ -16,7 +16,7 @@ html { scroll-padding-top: calc(var(--header) + 12px); }
 .fine { margin: 10px 0 18px; color: var(--ink-2); font-size: .92rem; }
 .center { text-align: center; }
 .sub-title { margin: 0 0 14px; font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; }
-.text-link { color: inherit; font-weight: 700; }
+.text-link { display: inline-block; padding-block: 10px; color: inherit; font-weight: 700; }
 .sec-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 12px 28px; border-radius: 64px; background: var(--purple); color: #fff; font-weight: 700; text-decoration: none; transition: background-color .2s var(--ease); }
 .sec-btn:hover { background: #6545e0; }
 .sec-btn.light { background: #fff; color: var(--ink); }
@@ -78,9 +78,11 @@ html { scroll-padding-top: calc(var(--header) + 12px); }
 .site-footer { padding: 56px var(--gutter-r) 24px var(--gutter-l); background: #06264f; color: #d7e6fb; line-height: 1.5; }
 .site-footer a { color: #fff; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 32px; }
-.footer-brand { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; color: #fff; font-family: var(--font-brand); font-size: 1.5rem; font-weight: 700; }
+.footer-brand { margin: 0 0 10px; color: #fff; font-family: var(--font-brand); font-size: 1.5rem; font-weight: 700; }
+.footer-brand a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; border-radius: 8px; }
 .site-footer h2 { margin: 0 0 12px; color: #fff; font-size: 1rem; }
-.site-footer li { margin-bottom: 8px; }
+.site-footer li { margin-bottom: 0; }
+.site-footer li a { display: inline-block; padding-block: 9px; }
 .footer-contact { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 16px 32px; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, .18); }
 .footer-contact p { margin: 0; }
 .footer-contact b { display: block; color: #fff; }
@@ -133,7 +135,7 @@ html { scroll-padding-top: calc(var(--header) + 12px); }
 .field small { color: var(--ink-2); font-weight: 500; }
 .field input, .field select, .field textarea { width: 100%; min-height: 48px; padding: 10px 14px; border: 1.5px solid #b9c6dc; border-radius: 12px; background: #fff; color: inherit; font: inherit; font-weight: 500; }
 .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible, .choice input:focus-visible { outline: 3px solid var(--purple); outline-offset: 1px; }
-.choice { display: flex; align-items: center; gap: 10px; min-height: 34px; font-weight: 500; }
+.choice { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 500; }
 .choice input { width: 18px; height: 18px; flex: none; }
 .star-row { display: flex; flex-wrap: wrap; gap: 6px 16px; }
 .stars { color: #d98a00 !important; font-size: 1.2rem; }
@@ -203,6 +205,8 @@ main { width: 100%; }
 .sky-cloud-shade { fill: #cfe0f4; }
 .scene-hero { z-index: 0; }
 .scene-clouds, .scene-white, .scene-panel, .scene-dog { z-index: 1; }
+/* Coco trots in and out of a frame narrower than the screen, so the frame's sides fade instead of cutting him off. */
+.scene-dog { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .scene-mask { overflow: hidden; }
 .scene-eyebrow, .scene-title-char { display: inline-block; }
 @media (max-width: 520px) { .title-moon { right: -4px; top: -42px; } }
@@ -212,7 +216,7 @@ main { width: 100%; }
 /* At night the butterflies give way to fireflies hovering over the hills. */
 .kid-butterfly { opacity: calc(1 - var(--night, 0) * 1.4); }
 .fireflies { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: var(--night, 0); }
-.firefly { position: absolute; translate: -50% 0; overflow: visible; }
+.firefly { position: absolute; left: 0; top: 0; overflow: visible; will-change: transform; }
 /* At night the daytime clouds fade away and the plane switches its lights on. */
 .scene-stage .cloud { opacity: calc(.45 * (1 - var(--night, 0) * 1.4)); }
 .plane-light { opacity: var(--night, 0); }
@@ -251,6 +255,48 @@ main { width: 100%; }
   .card-grid.five { display: flex; flex-wrap: wrap; justify-content: center; }
   .card-grid.five .card { flex: 0 1 calc((100% - 32px) / 3); }
 }
+/* Buttons shrink with the screen, and on phones the two hero buttons share a row. */
+@media (max-width: 1100px) {
+  .btn { min-height: 48px; padding: 8px 24px; font-size: 1rem; }
+  .scroll-cue { width: 40px; height: 40px; }
+  .scroll-cue svg { width: 18px; height: 18px; }
+}
+/* Phones: tighter space, and cards and steps lie flat with the icon on the left, so there is less to swipe through. */
+@media (max-width: 600px) {
+  .sec { padding-block: 44px; }
+  .sec-head { margin-bottom: 20px; }
+  .sec-btn { min-height: 46px; padding: 10px 22px; font-size: .98rem; }
+  .faq-item button { min-height: 50px; }
+  .cta { padding-block: 44px; }
+  .scene-panel { padding-block: 20px; }
+  .course-grid, .course-grid.with-dog { gap: 18px; }
+  .course-dog { max-width: 190px; }
+  .course-card { padding: 18px; }
+  .price { margin: 10px 0; font-size: 2.2rem; }
+  .facts { gap: 8px; margin-bottom: 16px; }
+  .outcomes { gap: 8px; margin-bottom: 22px; }
+  .ai-show { padding: 14px 12px 12px; }
+  .ai-show-grid { gap: 10px; }
+  .ai-tile-card { height: 58px; padding: 8px 10px; }
+  .ai-show-dots { margin-top: 10px; }
+  .made-for { margin-top: 20px; }
+  .frame-panel { padding-block: 50px; }
+  .frame-panel h2 { font-size: 1.75rem; }
+  .lead { font-size: 1rem; line-height: 1.55; }
+  .steps { gap: 16px; }
+  .step { display: grid; grid-template-columns: 44px 1fr; column-gap: 12px; text-align: left; }
+  .step-num { grid-row: span 2; width: 44px; height: 44px; margin: 0; font-size: 1.15rem; }
+  .step h3, .card-grid.five .card h3 { margin-bottom: 2px; }
+  .card-grid.five { gap: 10px; }
+  .card-grid.five .card { display: grid; grid-template-columns: 34px 1fr; column-gap: 10px; padding: 12px 14px; }
+  .card-grid.five .card-icon { grid-row: span 2; margin: 0; font-size: 1.6rem; }
+}
+@media (max-width: 520px) {
+  .btn-row { flex-direction: row; flex-wrap: nowrap; gap: 8px; }
+  .btn { flex: 1 1 0; width: auto; min-width: 0; min-height: 46px; padding: 6px 10px; gap: 6px; font-size: .92rem; }
+  .btn svg { width: 14px; height: 14px; }
+}
+@media (min-width: 360px) and (max-width: 420px) { .ai-show-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 /* Short phones: the whole hero has to fit in one screen. */
 @media (max-width: 520px) and (max-height: 700px) {
   .hero-inner { gap: 10px; padding-block: 16px 104px; }
@@ -261,6 +307,34 @@ main { width: 100%; }
   .note { padding: 4px 12px; font-size: .85rem; }
   .scroll-cue { display: none; }
   .kids { width: min(62vw, 300px); }
-  .title-sun, .title-moon { display: none; }
+  .title-sun, .title-moon { top: -34px; width: 38px; }
   .plane { width: 64px; }
+}
+/* On smaller screens the plane skims the top of the title, as it does on desktop. */
+.no-break { white-space: nowrap; }
+@media (max-width: 1100px) { .plane { --plane-w: clamp(96px, 16vw, 150px); top: max(4px, calc(var(--title-top, 14%) - var(--plane-w) * .46)); width: var(--plane-w); } }
+
+/* Tall and very wide screens: the course sits in the middle of the stage, and the hero title grows a little. */
+.scene-panel { display: flex; flex-direction: column; justify-content: center; min-height: 100%; }
+.scene-panel .sec-inner { width: 100%; }
+@media (min-width: 1920px) {
+  .hero h1 { font-size: clamp(5.5rem, 4.6vw, 7.5rem); }
+  .sub { font-size: 1.75rem; }
+}
+/* The arrow keeps its round shape when the hero is tight for space. */
+.scroll-cue { flex: none; }
+/* Phones held sideways and other very short screens: everything shrinks to fit one screen. */
+@media (max-height: 500px) {
+  .hero-inner { justify-content: flex-start; gap: 8px; padding-block: 10px 72px; }
+  .hero h1 { font-size: 1.9rem; }
+  .sub { font-size: 1rem; }
+  .btn-row { flex-wrap: nowrap; gap: 10px; }
+  .btn { width: auto; min-height: 44px; padding: 6px 20px; font-size: .95rem; }
+  .note { padding: 3px 12px; font-size: .82rem; }
+  .scroll-cue { display: none; }
+  .title-sun, .title-moon { top: 0; right: -50px; width: 38px; }
+  .kids { right: 2%; width: 230px; }
+  .mascot { width: 92px; }
+  .plane { top: 4px; width: 70px; }
+  .cloud-a, .cloud-b { top: 2%; width: 90px; }
 }

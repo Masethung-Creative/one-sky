@@ -18,7 +18,7 @@
   padding-left: max(20px, env(safe-area-inset-left, 0px));
   padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
-.brand { display: inline-flex; align-items: center; gap: 10px; margin-right: auto; flex-shrink: 0; text-decoration: none; border-radius: 8px; }
+.brand { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; margin-right: auto; flex-shrink: 0; text-decoration: none; border-radius: 8px; }
 .brand img { display: block; height: auto; }
 .logo-text { font-family: var(--font-brand); font-size: 1.45rem; font-weight: 700; letter-spacing: -.01em; color: #003071; white-space: nowrap; }
 
@@ -61,7 +61,7 @@
   background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg);
 }
 .lang-item {
-  width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 8px; text-align: start;
+  min-height: 48px; width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 8px; text-align: start;
   font: inherit; color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer;
 }
 .lang-item:hover, .lang-item.is-selected { border-color: var(--purple); background: var(--purple-soft); }
@@ -87,15 +87,21 @@ body { top: 0 !important; }
   .site-nav > ul a { display: block; padding: 12px; white-space: normal; }
   .nav-actions { flex-wrap: wrap; }
   .site-nav .nav-enrol { flex: 1 1 100%; white-space: normal; }
-  .lang-panel { right: auto; left: 0; }
+  /* The header's blur makes fixed children position against the header, so in the menu the language list sits in the flow. */
+  .site-nav { max-height: calc(100svh - var(--header)); overflow-y: auto; }
+  .lang-menu { display: contents; }
+  .lang-backdrop { display: none; }
+  .lang-panel { position: static; order: 1; flex: 1 1 100%; width: 100%; box-shadow: none; }
+  .site-nav .nav-enrol { order: 2; }
 }
 @media (max-width: 640px) {
-  .lang-trigger-name { display: none; }
   .lang-trigger { padding-inline-end: 10px; }
-  .lang-backdrop { background: rgba(29,27,58,.45); }
-  .lang-panel { position: fixed; top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 75vh; overflow: auto; border-radius: 24px 24px 0 0; padding: 18px 14px calc(18px + env(safe-area-inset-bottom, 0px)); }
+  .menu-btn { width: 44px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .site-nav .nav-enrol:hover { transform: none; }
   .lang-trigger, .lang-chevron, .site-nav .nav-enrol { transition: none; }
+}
+@media (max-width: 360px) {
+  .lang-panel { grid-template-columns: 1fr; }
 }

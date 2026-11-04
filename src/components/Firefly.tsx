@@ -7,7 +7,10 @@
  */
 import React, { useEffect, useId, useRef, useState } from "react";
 
-export type FireflyPhase = "hover" | "flap" | "glow" | "fly";
+export type FireflyPhase = "hover" | "flap" | "glow" | "fly" | "rest";
+
+/** Steers the firefly around its parent, in px. Return null to leave it where it is. */
+export type FireflyFlight = (dt: number) => { x: number; y: number; phase: FireflyPhase } | null;
 
 export interface FireflyProps {
   /** Scene size in SVG units (also the rendered px size unless styled). */
@@ -23,6 +26,13 @@ export interface FireflyProps {
   speed?: number;
   /** Faint light trail behind the lantern. */
   trail?: boolean;
+  /** Fly where this says instead of the figure-8. The whole svg moves, so it costs little to repaint. */
+  flight?: FireflyFlight;
+  /** Size of the glow compared with the insect. */
+  halo?: number;
+  /** Multiplies how long a flash takes, and starts it this many seconds in. */
+  blink?: number;
+  blinkDelay?: number;
   /** Called whenever the active phase changes. */
   onPhaseChange?: (phase: FireflyPhase) => void;
   className?: string;
@@ -45,6 +55,7 @@ const PHASES: FireflyPhase[] = ["hover", "flap", "glow", "fly"];
 
 /** Per phase: how far it roams (0–1), wing beat, light pattern. */
 const PHASE_CFG: Record<FireflyPhase, { roam: number; beat: string; light: string; lightDur: string }> = {
+  rest: { roam: 0, beat: "1.4s", light: "ff-breathe", lightDur: "3.4s" },
   hover: { roam: 0.06, beat: "0.12s", light: "ff-breathe", lightDur: "2.6s" },
   flap: { roam: 0.16, beat: "0.09s", light: "ff-breathe", lightDur: "1.8s" },
   glow: { roam: 0.1, beat: "0.11s", light: "ff-flash2", lightDur: "1.9s" },
@@ -58,7 +69,9 @@ const CSS = `
 .ff-scene .ff-elytra{transform-box:fill-box;transform-origin:100% 100%;animation:ff-elytra var(--ff-beat) linear infinite alternate}
 .ff-scene .ff-blur{opacity:0;transition:opacity .4s}
 .ff-flap .ff-blur,.ff-fly .ff-blur{opacity:1}
-.ff-scene .ff-light{animation:var(--ff-light) var(--ff-light-dur) ease-in-out infinite}
+.ff-scene .ff-light{animation:var(--ff-light) calc(var(--ff-light-dur) * var(--ff-blink,1)) ease-in-out var(--ff-blink-delay,0s) infinite}
+.ff-scene .ff-trail{transition:opacity .5s}
+.ff-rest .ff-trail{opacity:0}
 @keyframes ff-wing-a{from{transform:rotate(-14deg)}to{transform:rotate(38deg) scaleY(.5)}}
 @keyframes ff-wing-b{from{transform:rotate(10deg)}to{transform:rotate(-32deg) scaleY(.55)}}
 @keyframes ff-elytra{from{transform:rotate(-4deg)}to{transform:rotate(8deg)}}
@@ -78,18 +91,26 @@ export default function Firefly({
   phaseMs = 3200,
   speed = 1,
   trail = true,
+  flight,
+  halo: glow = 1,
+  blink = 1,
+  blinkDelay = 0,
   onPhaseChange,
   className,
   style,
 }: FireflyProps) {
   const [step, setStep] = useState(0);
+  const [flown, setFlown] = useState<FireflyPhase | null>(null);
   const uid = useId().replace(/:/g, "");
+  const sceneRef = useRef<SVGSVGElement>(null);
   const bugRef = useRef<SVGGElement>(null);
   const trailRef = useRef<SVGGElement>(null);
 
-  const current: FireflyPhase = phase === "loop" ? PHASES[step] : phase;
-  const live = useRef({ phase: current, speed, scale });
-  live.current = { phase: current, speed, scale };
+  const current: FireflyPhase = flown ?? (phase === "loop" ? PHASES[step] : phase);
+  const live = useRef({ phase: current, speed, scale, flight });
+  useEffect(() => {
+    live.current = { phase: current, speed, scale, flight };
+  });
 
   // Looping timeline
   useEffect(() => {
@@ -114,21 +135,32 @@ export default function Firefly({
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const { phase: p, speed: sp, scale: sc } = live.current;
+      const { phase: p, speed: sp, scale: sc, flight: steer } = live.current;
       if (!reduce) s.t += dt * sp;
+
+      const steered = steer?.(dt);
+      if (steer && !steered) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      if (steered && steered.phase !== p) setFlown(steered.phase);
 
       s.roam += (PHASE_CFG[p].roam - s.roam) * Math.min(1, dt * 0.6);
       const ax = width * 0.36 * s.roam + 5;
       const ay = height * 0.27 * s.roam + 4;
-      const nx = cx + ax * Math.sin(s.t * 0.7);
-      const ny = cy + ay * Math.sin(s.t * 1.4 + 0.6);
+      const nx = steered ? steered.x : cx + ax * Math.sin(s.t * 0.7);
+      const ny = steered ? steered.y : cy + ay * Math.sin(s.t * 1.4 + 0.6);
       const vx = (nx - s.x) / (dt || 1 / 60);
       const vy = (ny - s.y) / (dt || 1 / 60);
       s.x = nx;
       s.y = ny;
+      // A steered firefly stays at the middle of its svg, and the svg itself moves.
+      const bx = steered ? cx : s.x;
+      const by = steered ? cy : s.y;
+      if (steered && sceneRef.current) sceneRef.current.style.transform = `translate(${(s.x - cx).toFixed(2)}px, ${(s.y - cy).toFixed(2)}px)`;
 
       // Turn around only when actually travelling, not while hovering
-      if (Math.abs(vx) > 22) s.flipTo = vx > 0 ? 1 : -1;
+      if (Math.abs(vx) > (steered ? 8 : 22)) s.flipTo = vx > 0 ? 1 : -1;
       s.flip += (s.flipTo - s.flip) * Math.min(1, dt * 3);
 
       const pitch = Math.atan2(vy, Math.abs(vx) + 1) * (180 / Math.PI);
@@ -137,7 +169,7 @@ export default function Firefly({
 
       bugRef.current?.setAttribute(
         "transform",
-        `translate(${s.x.toFixed(2)} ${s.y.toFixed(2)}) rotate(${s.ang.toFixed(2)}) scale(${(s.flip * sc).toFixed(3)} ${sc})`
+        `translate(${bx.toFixed(2)} ${by.toFixed(2)}) rotate(${s.ang.toFixed(2)}) scale(${(s.flip * sc).toFixed(3)} ${sc})`
       );
 
       // Lantern position for the trail
@@ -153,8 +185,8 @@ export default function Firefly({
           for (let i = 0; i < dots.length; i++) {
             const pt = s.hist[i];
             if (!pt) continue;
-            dots[i].setAttribute("cx", pt[0].toFixed(1));
-            dots[i].setAttribute("cy", pt[1].toFixed(1));
+            dots[i].setAttribute("cx", (pt[0] - s.x + bx).toFixed(1));
+            dots[i].setAttribute("cy", (pt[1] - s.y + by).toFixed(1));
           }
         }
       }
@@ -170,6 +202,8 @@ export default function Firefly({
     "--ff-beat": cfg.beat,
     "--ff-light": cfg.light,
     "--ff-light-dur": cfg.lightDur,
+    "--ff-blink": blink,
+    "--ff-blink-delay": `${blinkDelay}s`,
     ...style,
   } as React.CSSProperties;
   const halo = `ff-halo-${uid}`;
@@ -177,6 +211,7 @@ export default function Firefly({
 
   return (
     <svg
+      ref={sceneRef}
       className={`ff-scene ff-${current}${className ? " " + className : ""}`}
       viewBox={`0 0 ${width} ${height}`}
       width={width}
@@ -202,17 +237,19 @@ export default function Firefly({
 
       {/* Light trail */}
       {trail && (
-        <g ref={trailRef} className="ff-light" fill={c.glow}>
-          {Array.from({ length: 14 }, (_, i) => (
-            <circle key={i} cx={-99} cy={-99} r={2.6 - i * 0.16} opacity={0.5 - i * 0.034} />
-          ))}
+        <g className="ff-trail">
+          <g ref={trailRef} className="ff-light" fill={c.glow}>
+            {Array.from({ length: 14 }, (_, i) => (
+              <circle key={i} cx={-99} cy={-99} r={(2.6 - i * 0.16) * Math.min(1, scale / 0.42)} opacity={0.5 - i * 0.034} />
+            ))}
+          </g>
         </g>
       )}
 
       {/* The insect, drawn facing right around its thorax at (0,0) */}
       <g ref={bugRef} transform={`translate(${width / 2} ${height / 2})`}>
         {/* Glow halo around the lantern */}
-        <circle className="ff-light" cx="-33" cy="4" r="56" fill={`url(#${halo})`} />
+        <circle className="ff-light" cx="-33" cy="4" r={56 * glow} fill={`url(#${halo})`} />
 
         {/* Far hindwing */}
         <path

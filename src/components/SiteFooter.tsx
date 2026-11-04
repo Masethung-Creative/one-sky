@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import HomeLink from "./HomeLink";
 
 const FOOTER_LINKS = [
   { title: "Company", links: [["About Us", "about"], ["Reviews", "reviews"], ["Terms & Conditions", "terms-conditions"], ["Privacy Policy", "privacy-policy"], ["Refund Policy", "refund-policy"]] },
@@ -13,8 +14,10 @@ export default function SiteFooter() {
       <div className="sec-inner footer-grid">
         <div>
           <p className="footer-brand" translate="no">
-            <Image src="/one-sky-logo.png" alt="" width={52} height={40} />
-            One Sky
+            <HomeLink aria-label="One Sky home">
+              <Image src="/one-sky-logo-footer.png" alt="" width={52} height={40} />
+              One Sky
+            </HomeLink>
           </p>
           <p>Every child and student with AI</p>
           <p>Our vision: Empower 1 crore children and 1 lakh teachers across India by 2030.</p>

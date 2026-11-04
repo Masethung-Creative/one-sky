@@ -1,10 +1,7 @@
-import Firefly from "./Firefly";
+import Fireflies from "./Fireflies";
 import HeroCharacters from "./HeroCharacters";
 import HeroCourseScene from "./HeroCourseScene";
 import OneSkySections from "./OneSkySections";
-
-// Where each firefly flies over the hills (left %, bottom %), with its own pace so they never move together.
-const FIREFLIES = [[30, 14, 0.5, 5200], [76, 18, 0.42, 6100], [48, 22, 0.36, 7000], [10, 26, 0.46, 5700]];
 
 export default function OneSkyHero() {
   return (
@@ -201,14 +198,12 @@ export default function OneSkyHero() {
           <a className="btn" href="#course">Explore the Course</a>
           <a className="btn" href="#preview"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2.5 L15 9 L4 15.5z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/></svg>Watch a Free Preview</a>
         </div>
-        <p className="note">Self-Paced Course · Just ₹385 · Class 3–5, 6–10, 11 &amp; 12</p>
+        <p className="note">Self-Paced Course · Just ₹385 · <span className="no-break">Class 3–5,</span> <span className="no-break">6–10,</span> <span className="no-break">11 &amp; 12</span></p>
         <a className="scroll-cue" href="#course" aria-label="Scroll to The Course">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 3v13M4 10.5 10 16.5 16 10.5"/></svg>
         </a>
       </div>
-      <span className="fireflies" aria-hidden="true">
-        {FIREFLIES.map(([left, bottom, speed, phaseMs]) => (<Firefly key={left} className="firefly" width={300} height={200} scale={0.42} speed={speed} phaseMs={phaseMs} style={{ left: `${left}%`, bottom: `${bottom}%` }} />))}
-      </span>
+      <Fireflies />
     </section>
     </HeroCourseScene>
     
