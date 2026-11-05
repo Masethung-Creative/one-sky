@@ -227,12 +227,17 @@ main { width: 100%; }
 
 /* Our Vision: cloud edges along the top and bottom of the blue band, in the colours of the sections either side. */
 .vision-frame::before, .vision-frame::after { content: ""; position: absolute; z-index: 2; left: 0; right: 0; height: clamp(80px, 7.5vw, 120px); background-repeat: no-repeat; background-position: center; background-size: max(100%, 1100px) 100%; pointer-events: none; }
-.vision-frame::before { top: -1px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201600%20120'%3E%3Cg%20transform%3D'matrix(1%200%200%20-1%200%20120)'%20fill%3D'%23ffffff'%3E%3Crect%20y%3D'90'%20width%3D'1600'%20height%3D'30'%2F%3E%3Ccircle%20cx%3D'-70'%20cy%3D'125'%20r%3D'88'%2F%3E%3Ccircle%20cx%3D'70'%20cy%3D'125'%20r%3D'70'%2F%3E%3Ccircle%20cx%3D'220'%20cy%3D'125'%20r%3D'104'%2F%3E%3Ccircle%20cx%3D'370'%20cy%3D'125'%20r%3D'76'%2F%3E%3Ccircle%20cx%3D'500'%20cy%3D'125'%20r%3D'92'%2F%3E%3Ccircle%20cx%3D'640'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'790'%20cy%3D'125'%20r%3D'100'%2F%3E%3Ccircle%20cx%3D'925'%20cy%3D'125'%20r%3D'80'%2F%3E%3Ccircle%20cx%3D'1065'%20cy%3D'125'%20r%3D'90'%2F%3E%3Ccircle%20cx%3D'1200'%20cy%3D'125'%20r%3D'96'%2F%3E%3Ccircle%20cx%3D'1350'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'1490'%20cy%3D'125'%20r%3D'110'%2F%3E%3Ccircle%20cx%3D'1630'%20cy%3D'125'%20r%3D'78'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
-.vision-frame::after { bottom: -1px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201600%20120'%3E%3Cg%20fill%3D'%23f8fbff'%3E%3Crect%20y%3D'90'%20width%3D'1600'%20height%3D'30'%2F%3E%3Ccircle%20cx%3D'-10'%20cy%3D'125'%20r%3D'96'%2F%3E%3Ccircle%20cx%3D'130'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'280'%20cy%3D'125'%20r%3D'110'%2F%3E%3Ccircle%20cx%3D'430'%20cy%3D'125'%20r%3D'78'%2F%3E%3Ccircle%20cx%3D'560'%20cy%3D'125'%20r%3D'88'%2F%3E%3Ccircle%20cx%3D'700'%20cy%3D'125'%20r%3D'70'%2F%3E%3Ccircle%20cx%3D'850'%20cy%3D'125'%20r%3D'104'%2F%3E%3Ccircle%20cx%3D'985'%20cy%3D'125'%20r%3D'76'%2F%3E%3Ccircle%20cx%3D'1125'%20cy%3D'125'%20r%3D'92'%2F%3E%3Ccircle%20cx%3D'1260'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'1410'%20cy%3D'125'%20r%3D'100'%2F%3E%3Ccircle%20cx%3D'1550'%20cy%3D'125'%20r%3D'80'%2F%3E%3Ccircle%20cx%3D'1690'%20cy%3D'125'%20r%3D'90'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+.vision-frame::before { top: -1px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201600%20120'%20preserveAspectRatio%3D'none'%3E%3Cg%20transform%3D'matrix(1%200%200%20-1%200%20120)'%20fill%3D'%23ffffff'%3E%3Crect%20y%3D'90'%20width%3D'1600'%20height%3D'30'%2F%3E%3Ccircle%20cx%3D'-70'%20cy%3D'125'%20r%3D'88'%2F%3E%3Ccircle%20cx%3D'70'%20cy%3D'125'%20r%3D'70'%2F%3E%3Ccircle%20cx%3D'220'%20cy%3D'125'%20r%3D'104'%2F%3E%3Ccircle%20cx%3D'370'%20cy%3D'125'%20r%3D'76'%2F%3E%3Ccircle%20cx%3D'500'%20cy%3D'125'%20r%3D'92'%2F%3E%3Ccircle%20cx%3D'640'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'790'%20cy%3D'125'%20r%3D'100'%2F%3E%3Ccircle%20cx%3D'925'%20cy%3D'125'%20r%3D'80'%2F%3E%3Ccircle%20cx%3D'1065'%20cy%3D'125'%20r%3D'90'%2F%3E%3Ccircle%20cx%3D'1200'%20cy%3D'125'%20r%3D'96'%2F%3E%3Ccircle%20cx%3D'1350'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'1490'%20cy%3D'125'%20r%3D'110'%2F%3E%3Ccircle%20cx%3D'1630'%20cy%3D'125'%20r%3D'78'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
+.vision-frame::after { bottom: -1px; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201600%20120'%20preserveAspectRatio%3D'none'%3E%3Cg%20fill%3D'%23f8fbff'%3E%3Crect%20y%3D'90'%20width%3D'1600'%20height%3D'30'%2F%3E%3Ccircle%20cx%3D'-10'%20cy%3D'125'%20r%3D'96'%2F%3E%3Ccircle%20cx%3D'130'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'280'%20cy%3D'125'%20r%3D'110'%2F%3E%3Ccircle%20cx%3D'430'%20cy%3D'125'%20r%3D'78'%2F%3E%3Ccircle%20cx%3D'560'%20cy%3D'125'%20r%3D'88'%2F%3E%3Ccircle%20cx%3D'700'%20cy%3D'125'%20r%3D'70'%2F%3E%3Ccircle%20cx%3D'850'%20cy%3D'125'%20r%3D'104'%2F%3E%3Ccircle%20cx%3D'985'%20cy%3D'125'%20r%3D'76'%2F%3E%3Ccircle%20cx%3D'1125'%20cy%3D'125'%20r%3D'92'%2F%3E%3Ccircle%20cx%3D'1260'%20cy%3D'125'%20r%3D'72'%2F%3E%3Ccircle%20cx%3D'1410'%20cy%3D'125'%20r%3D'100'%2F%3E%3Ccircle%20cx%3D'1550'%20cy%3D'125'%20r%3D'80'%2F%3E%3Ccircle%20cx%3D'1690'%20cy%3D'125'%20r%3D'90'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); }
 
 /* The blue frame holds still while scrolling changes the content inside it. */
 .frame-track { position: relative; }
-.vision-frame { position: sticky; top: var(--header); height: calc(100svh - var(--header)); overflow: hidden; }
+.vision-frame, .guide-frame { position: sticky; top: var(--header); height: calc(100svh - var(--header)); overflow: hidden; }
+/* The light frame has no clouds of its own, so its content has more room. */
+.guide-frame .frame-panel { padding-block: clamp(32px, 4vw, 56px); }
+.guide-frame .preview-grid .sec-head { margin-bottom: 0; text-align: left; }
+.guide-frame.is-static { position: relative; top: 0; height: auto; }
+.guide-frame.is-static .frame-panel { position: static; }
 .frame-panel { position: absolute; top: 0; left: 0; right: 0; min-height: 100%; display: flex; flex-direction: column; justify-content: center; padding: clamp(84px, 8vw, 124px) var(--gutter-r) clamp(84px, 8vw, 124px) var(--gutter-l); }
 .frame-panel .sec-inner { width: 100%; }
 .frame-panel h2 { margin: 0; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -.035em; text-wrap: balance; }
@@ -241,6 +246,29 @@ main { width: 100%; }
 .vision-frame .step-num { background: #fff; color: var(--sky-top); }
 .vision-frame .card { color: var(--ink); }
 .vision-frame.is-static { position: relative; top: 0; height: auto; }
+
+/* The two planes crossing the end of Why One Sky. They sit over the content and under the frame's clouds. */
+.crew-flight { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; visibility: hidden; }
+@media (max-aspect-ratio: 1/1) { .crew-flight { left: -35%; width: 170%; } }
+.crew-bank { animation: crewBank 1.9s ease-in-out infinite alternate; }
+.crew-bank-late { animation-delay: -.9s; }
+@keyframes crewBank { from { transform: translateY(-5px) rotate(-2deg); } to { transform: translateY(5px) rotate(2deg); } }
+.crew-prop { animation: crewProp .08s linear infinite alternate; }
+@keyframes crewProp { from { transform: scaleY(1); } to { transform: scaleY(-1); } }
+.crew-wing { animation: crewWing 1.9s ease-in-out infinite alternate; }
+@keyframes crewWing { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+.crew-exhaust { opacity: var(--crew-exhaust, .3); }
+.crew-speed { stroke-dasharray: 46 150; animation: crewSpeed .45s linear infinite; }
+@keyframes crewSpeed { to { stroke-dashoffset: -196; } }
+.crew-puff { opacity: 0; animation: crewPuff 1.3s cubic-bezier(.2, .7, .4, 1) infinite; }
+@keyframes crewPuff { 0% { transform: translate(0, 0) scale(.35); opacity: .85; } 100% { transform: translate(190px, -26px) scale(1.7); opacity: 0; } }
+.crew-scarf-a { animation: crewScarfA .5s ease-in-out infinite alternate; }
+.crew-scarf-b { animation: crewScarfB .5s ease-in-out infinite alternate; animation-delay: -.16s; }
+@keyframes crewScarfA { from { transform: rotate(-9deg); } to { transform: rotate(7deg); } }
+@keyframes crewScarfB { from { transform: rotate(-20deg); } to { transform: rotate(18deg); } }
+.crew-lean { transform-origin: 0 44px; transform: rotate(calc(var(--crew-lean, 0) * 1deg)); }
+.crew-bob { animation: crewBob 1.25s ease-in-out infinite alternate; }
+@keyframes crewBob { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-4px) rotate(2deg); } }
 .vision-frame.is-static .frame-panel { position: static; }
 .frame-word-mask { display: inline-block; overflow: hidden; margin-bottom: -.14em; padding-bottom: .14em; vertical-align: top; }
 .frame-word { display: inline-block; transform-origin: 0 100%; }

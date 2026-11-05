@@ -38,6 +38,12 @@ function chooseLanguage(code: string) {
   window.location.reload();
 }
 
+// Next.js stays put when the address already ends in this section, so a second click on its link goes back to it here.
+function returnToSection(href: string) {
+  const [path, id] = href.split("#");
+  if (id && location.pathname === path && location.hash === `#${id}`) document.getElementById(id)?.scrollIntoView();
+}
+
 declare global {
   interface Window {
     googleTranslateElementInit?: () => void;
@@ -100,7 +106,7 @@ export default function SiteHeader() {
           <ul>
             {NAV_LINKS.map((link) => (
               <li key={link.label}>
-                <Link href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</Link>
+                <Link href={link.href} onClick={() => { setMenuOpen(false); returnToSection(link.href); }}>{link.label}</Link>
               </li>
             ))}
           </ul>

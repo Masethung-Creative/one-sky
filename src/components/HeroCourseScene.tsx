@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import AiToolsShow from "./AiToolsShow";
 
 export const COURSE_URL = "/courses/ai-foundation";
@@ -235,5 +235,7 @@ function StaticScene({ hero }: { hero: ReactNode }) {
 
 export default function HeroCourseScene({ children }: { children: ReactNode }) {
   const reduced = useReducedMotion();
-  return reduced ? <StaticScene hero={children} /> : <AnimatedScene hero={children} />;
+  // The server can't know this setting, so the first render in the browser has to match what the server sent.
+  const inBrowser = useSyncExternalStore(() => () => {}, () => true, () => false);
+  return reduced && inBrowser ? <StaticScene hero={children} /> : <AnimatedScene hero={children} />;
 }
