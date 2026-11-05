@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="osk4-root" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Flexible learning" style="--osk4-d:4s;overflow:visible"><style>
+:where(.osk4-root *:not([transform])) { transform-box: fill-box; }
+.osk4-root.is-paused * { animation-play-state: paused !important; }
+
+/* Girl + laptop float */
+.osk4-scene { transform-origin: 50% 100%; animation: osk4-float var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-float {
+  0%, 100% { transform: translateY(0); }
+  25%      { transform: translateY(-4px); }
+  50%      { transform: translateY(0); }
+  75%      { transform: translateY(-3px); }
+}
+
+/* Clock: swing + alarm shake */
+.osk4-clock { transform-origin: 50% 50%; animation: osk4-clock var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-clock {
+  0%, 100% { transform: rotate(-6deg) scale(1); }
+  20%      { transform: rotate(6deg) scale(1); }
+  38%      { transform: rotate(0deg) scale(1); }
+  41%      { transform: rotate(-12deg) scale(1.12); }
+  44%      { transform: rotate(12deg) scale(1.12); }
+  47%      { transform: rotate(-10deg) scale(1.1); }
+  50%      { transform: rotate(10deg) scale(1.08); }
+  53%      { transform: rotate(-4deg) scale(1.02); }
+  57%      { transform: rotate(0deg) scale(1); }
+  80%      { transform: rotate(-6deg) scale(1); }
+}
+.osk4-minute-hand { transform-box: view-box; transform-origin: 182px 60px; animation: osk4-turn var(--osk4-d) linear infinite; }
+.osk4-hour-hand   { transform-box: view-box; transform-origin: 182px 60px; animation: osk4-turn calc(var(--osk4-d) * 12) linear infinite; }
+@keyframes osk4-turn { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.osk4-clock-ticks { transform-origin: 50% 50%; animation: osk4-ticks var(--osk4-d) ease-out infinite; }
+@keyframes osk4-ticks {
+  0%, 39% { opacity: 0; transform: scale(.5); }
+  43%     { opacity: 1; transform: scale(1); }
+  52%     { opacity: 1; transform: scale(1.1); }
+  60%, 100% { opacity: 0; transform: scale(1.25); }
+}
+
+/* Head bob, ponytail swing, blink, smile */
+.osk4-head { transform-box: view-box; transform-origin: 92px 152px; animation: osk4-bob var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-bob {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25%      { transform: rotate(7deg) translateY(-1px); }
+  50%      { transform: rotate(0deg) translateY(0); }
+  75%      { transform: rotate(-5deg) translateY(-1px); }
+}
+.osk4-ponytail { transform-box: view-box; transform-origin: 66px 96px; animation: osk4-swing var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-swing {
+  0%, 100% { transform: rotate(4deg); }
+  25%      { transform: rotate(-14deg); }
+  50%      { transform: rotate(6deg); }
+  75%      { transform: rotate(-8deg); }
+}
+.osk4-bow { transform-origin: 50% 50%; animation: osk4-bow calc(var(--osk4-d) / 2) ease-in-out infinite; }
+@keyframes osk4-bow { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(-8deg); } }
+.osk4-eye { transform-origin: 50% 50%; animation: osk4-blink var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-blink {
+  0%, 16% { transform: scaleY(1); } 18% { transform: scaleY(.1); } 20% { transform: scaleY(1); }
+  64% { transform: scaleY(1); } 66% { transform: scaleY(.1); } 68%, 100% { transform: scaleY(1); }
+}
+.osk4-mouth { transform-origin: 50% 0%; animation: osk4-smile var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-smile { 0%, 35% { transform: scale(1); } 45%, 60% { transform: scale(1.25, 1.35); } 70%, 100% { transform: scale(1); } }
+.osk4-cheek { animation: osk4-cheek var(--osk4-d) ease-in-out infinite; }
+@keyframes osk4-cheek { 0%, 35% { opacity: .5; } 45%, 62% { opacity: 1; } 72%, 100% { opacity: .5; } }
+.osk4-hand { transform-origin: 50% 100%; animation: osk4-tap calc(var(--osk4-d) / 4) ease-in-out infinite; }
+@keyframes osk4-tap { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+
+/* Learning bits float up from the laptop, one after another */
+.osk4-bit { opacity: 0; transform-origin: 50% 50%; animation: osk4-rise var(--osk4-d) ease-out infinite; }
+.osk4-bit-2 { animation-delay: calc(var(--osk4-d) / -3); }
+.osk4-bit-3 { animation-delay: calc(var(--osk4-d) / -1.5); }
+@keyframes osk4-rise {
+  0%   { opacity: 0; transform: translate(0, 18px) scale(.3) rotate(0deg); }
+  10%  { opacity: 1; transform: translate(0, 0) scale(1.1) rotate(-6deg); }
+  20%  { opacity: 1; transform: translate(-6px, -18px) scale(1) rotate(4deg); }
+  30%  { opacity: 1; transform: translate(4px, -34px) scale(.95) rotate(-4deg); }
+  38%  { opacity: 0; transform: translate(-2px, -46px) scale(.85) rotate(0deg); }
+  100% { opacity: 0; transform: translate(-2px, -46px) scale(.85); }
+}
+.osk4-cloud-logo { transform-origin: 50% 50%; animation: osk4-logo calc(var(--osk4-d) / 3) ease-in-out infinite; }
+@keyframes osk4-logo { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.18); } 25% { transform: scale(1); } }
+.osk4-screen-glow { animation: osk4-glow calc(var(--osk4-d) / 3) ease-in-out infinite; }
+@keyframes osk4-glow { 0%, 100% { opacity: 0; } 10% { opacity: .6; } 30% { opacity: 0; } }
+
+.osk4-accent { transform-origin: 50% 50%; animation: osk4-accent calc(var(--osk4-d) / 2) ease-in-out infinite; }
+@keyframes osk4-accent { 0%,100% { opacity: .5; transform: scale(.88); } 50% { opacity: 1; transform: scale(1.05); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .osk4-root * { animation: none !important; }
+  .osk4-clock-ticks, .osk4-screen-glow { opacity: 0; }
+  .osk4-bit-1 { opacity: 1; transform: translateY(-14px); }
+}
+
+/* Card shell */
+.osk4-card {
+  width: 260px; border-radius: 28px; padding: 18px 18px 26px;
+  background: linear-gradient(#E6DEFF 0%, #F1ECFF 55%, #F7F4FF 100%);
+  box-shadow: 0 10px 24px rgba(30, 80, 200, .18), inset 0 0 0 3px rgba(255,255,255,.7);
+  text-align: center; font-family: &quot;Baloo 2&quot;, &quot;Nunito&quot;, system-ui, sans-serif;
+}
+.osk4-card h3 { margin: 4px 0 8px; font-size: 26px; line-height: 1.1; color: #14203D; font-weight: 800; }
+.osk4-card p  { margin: 0; font-size: 16px; line-height: 1.45; color: #2B3550; }
+</style><g class="osk4-base-cloud" fill="#EEE8FF"><ellipse cx="120" cy="206" rx="92" ry="13"></ellipse><circle cx="58" cy="202" r="14"></circle><circle cx="92" cy="197" r="18"></circle><circle cx="148" cy="197" r="18"></circle><circle cx="182" cy="202" r="14"></circle><ellipse cx="124" cy="198" rx="80" ry="6" fill="#C9B8F5" opacity=".45"></ellipse></g><g stroke="#8A63E8" stroke-width="3.5" stroke-linecap="round" fill="none"><path class="osk4-accent osk4-accent-left" d="M22 128 l9 4 M20 141 l9 0"></path><path class="osk4-accent osk4-accent-right" d="M210 112 l8 -6 M214 124 l9 -1"></path></g><g class="osk4-clock"><circle cx="168" cy="38" r="5" fill="#8A63E8"></circle><circle cx="196" cy="38" r="5" fill="#8A63E8"></circle><circle class="osk4-clock-rim" cx="182" cy="60" r="25" fill="#A98BF0"></circle><circle class="osk4-clock-face" cx="182" cy="60" r="19" fill="#FFFFFF"></circle><g fill="#C9B8F5"><circle cx="182" cy="45" r="2"></circle><circle cx="197" cy="60" r="2"></circle><circle cx="182" cy="75" r="2"></circle><circle cx="167" cy="60" r="2"></circle></g><path class="osk4-hour-hand" d="M182 60 L190 66" stroke="#3B2A4A" stroke-width="3.5" stroke-linecap="round"></path><path class="osk4-minute-hand" d="M182 60 L182 46" stroke="#5B3FC4" stroke-width="3" stroke-linecap="round"></path><circle cx="182" cy="60" r="2.8" fill="#3B2A4A"></circle></g><g class="osk4-clock-ticks" stroke="#8A63E8" stroke-width="3.5" stroke-linecap="round"><path d="M150 54 l-9 -2 M154 36 l-6 -7 M214 54 l9 -2 M210 36 l6 -7"></path></g><g class="osk4-scene"><g class="osk4-girl"><path class="osk4-shirt" d="M56 196 Q54 156 92 152 Q130 156 128 196 Z" fill="#FFC93C"></path><path d="M80 154 Q92 162 104 154" stroke="#F2B01E" stroke-width="3" fill="none" stroke-linecap="round"></path><g class="osk4-head"><g class="osk4-ponytail"><ellipse cx="56" cy="104" rx="13" ry="21" transform="rotate(-28 56 104)" fill="#4A2E26"></ellipse><g class="osk4-bow"><path d="M66 92 L54 82 L56 98 Z" fill="#FFC93C" stroke="#FFC93C" stroke-width="2" stroke-linejoin="round"></path><path d="M66 92 L74 78 L78 92 Z" fill="#FFC93C" stroke="#FFC93C" stroke-width="2" stroke-linejoin="round"></path><circle cx="66.5" cy="91" r="4" fill="#F2B01E"></circle></g></g><circle class="osk4-face" cx="92" cy="120" r="32" fill="#FFD9BF"></circle><circle cx="61" cy="122" r="6" fill="#FFD9BF"></circle><path class="osk4-hair" d="M58 122 Q54 84 92 82 Q130 84 126 118 Q118 104 104 100 Q100 110 84 108 Q72 110 64 120 Q61 124 58 122 Z" fill="#4A2E26"></path><g class="osk4-eye osk4-eye-left"><ellipse cx="86" cy="124" rx="4.5" ry="5.6" fill="#2B1B17"></ellipse><circle cx="87.6" cy="122" r="1.7" fill="#FFFFFF"></circle></g><g class="osk4-eye osk4-eye-right"><ellipse cx="106" cy="124" rx="4.5" ry="5.6" fill="#2B1B17"></ellipse><circle cx="107.6" cy="122" r="1.7" fill="#FFFFFF"></circle></g><path class="osk4-mouth" d="M90 135 Q97 145 104 135 Z" fill="#E8645A" stroke="#E8645A" stroke-width="2" stroke-linejoin="round"></path><circle class="osk4-cheek osk4-cheek-left" cx="77" cy="134" r="5" fill="#FF9DB0" opacity=".55"></circle><circle class="osk4-cheek osk4-cheek-right" cx="115" cy="133" r="5" fill="#FF9DB0" opacity=".55"></circle></g><path class="osk4-arm" d="M120 180 Q126 162 118 152" stroke="#FFC93C" stroke-width="13" stroke-linecap="round" fill="none"></path><g class="osk4-hand"><ellipse cx="114" cy="148" rx="10" ry="8" transform="rotate(-25 114 148)" fill="#FFD9BF"></ellipse></g></g><g class="osk4-laptop"><path class="osk4-laptop-lid" d="M132 122 L186 114 Q190 114 190 118 L194 168 L138 176 Z" fill="#3B7BEA" stroke="#3B7BEA" stroke-width="3" stroke-linejoin="round"></path><path class="osk4-screen-glow" d="M132 122 L186 114 Q190 114 190 118 L194 168 L138 176 Z" fill="#9CC2FF"></path><path d="M140 128 L150 127 L153 168 L144 169 Z" fill="#6FA3F5" opacity=".45"></path><g class="osk4-cloud-logo" fill="#FFFFFF"><circle cx="158" cy="148" r="6"></circle><circle cx="166" cy="144" r="8"></circle><circle cx="174" cy="148" r="6"></circle><rect x="152" y="148" width="28" height="6" rx="3"></rect></g><path class="osk4-laptop-base" d="M122 178 L198 168 Q204 168 205 172 L206 176 L128 188 Q122 188 122 184 Z" fill="#2F5BD8"></path></g><g class="osk4-bits"><g transform="translate(150 104)"><path class="osk4-bit osk4-bit-1" d="M0 -8 L2 -2.7 L7.6 -2.5 L3.2 1 L4.7 6.5 L0 3.4 L-4.7 6.5 L-3.2 1 L-7.6 -2.5 L-2 -2.7 Z" fill="#FFC93C" stroke="#FFC93C" stroke-width="1.5" stroke-linejoin="round"></path></g><g transform="translate(166 100)"><g class="osk4-bit osk4-bit-2"><circle cx="0" cy="0" r="8" fill="#4CC07A"></circle><path d="M-3.5 0 L-1 2.8 L4 -2.8" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></g></g><g transform="translate(180 104)"><path class="osk4-bit osk4-bit-3" d="M0 7 C-9 1 -8 -6 -3.5 -6 C-1.5 -6 0 -4.5 0 -3 C0 -4.5 1.5 -6 3.5 -6 C8 -6 9 1 0 7 Z" fill="#FF7FA6"></path></g></g></g></svg>

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="osk3-root" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Practical activities" style="--osk3-d:3s;overflow:visible"><style>
+.osk3-root * { transform-box: fill-box; }
+.osk3-root.is-paused * { animation-play-state: paused !important; }
+
+/* Whole scene: idle float */
+.osk3-scene { transform-origin: 50% 100%; animation: osk3-float var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-float {
+  0%   { transform: translateY(0); }
+  7%   { transform: translateY(-3px); }
+  13%  { transform: translateY(0); }
+  85%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+/* Scissors: rise out of the cup and snip twice */
+.osk3-scissors { animation: osk3-rise var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-rise {
+  0%, 13%  { transform: translateY(0); }
+  17%, 30% { transform: translateY(-7px); }
+  36%, 100% { transform: translateY(0); }
+}
+.osk3-scissor-left, .osk3-scissor-right { transform-box: view-box; transform-origin: 75px 104px; }
+.osk3-scissor-left  { animation: osk3-snipL var(--osk3-d) ease-in-out infinite; }
+.osk3-scissor-right { animation: osk3-snipR var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-snipL {
+  0%, 15% { transform: rotate(0); } 18% { transform: rotate(-14deg); } 21% { transform: rotate(0); }
+  25% { transform: rotate(-14deg); } 29%, 100% { transform: rotate(0); }
+}
+@keyframes osk3-snipR {
+  0%, 15% { transform: rotate(0); } 18% { transform: rotate(14deg); } 21% { transform: rotate(0); }
+  25% { transform: rotate(14deg); } 29%, 100% { transform: rotate(0); }
+}
+.osk3-snip-lines { transform-origin: 50% 100%; animation: osk3-pop var(--osk3-d) ease-out infinite; }
+@keyframes osk3-pop {
+  0%, 20% { opacity: 0; transform: scale(.4); }
+  23%     { opacity: 1; transform: scale(1); }
+  31%     { opacity: 0; transform: scale(1.2); }
+  100%    { opacity: 0; }
+}
+
+/* Red block hops and lands back on the stack */
+.osk3-block-red { transform-origin: 50% 100%; animation: osk3-hop var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-hop {
+  0%, 33% { transform: translateY(0) rotate(0) scale(1,1); }
+  37%     { transform: translateY(-20px) rotate(-6deg) scale(1,1); animation-timing-function: ease-in; }
+  42%     { transform: translateY(0) rotate(0) scale(1,1); }
+  44%     { transform: translateY(0) rotate(0) scale(1.05,.9); }
+  47%     { transform: translateY(0) rotate(0) scale(.98,1.03); }
+  50%, 100% { transform: translateY(0) rotate(0) scale(1,1); }
+}
+.osk3-block-yellow, .osk3-block-blue { transform-origin: 50% 100%; animation: osk3-thud var(--osk3-d) ease-out infinite; }
+@keyframes osk3-thud {
+  0%, 42% { transform: scale(1,1); } 44% { transform: scale(1.02,.96); } 48%, 100% { transform: scale(1,1); }
+}
+
+/* Pencil wiggles while the squiggle draws */
+.osk3-pencil-move { transform-origin: 0% 50%; animation: osk3-draw var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-draw {
+  0%, 46% { transform: rotate(0) translateX(0); }
+  50% { transform: rotate(-3deg) translateX(2px); }
+  54% { transform: rotate(2deg) translateX(4px); }
+  58% { transform: rotate(-3deg) translateX(6px); }
+  62% { transform: rotate(1deg) translateX(7px); }
+  70%, 100% { transform: rotate(0) translateX(0); }
+}
+.osk3-squiggle { stroke-dasharray: 60; animation: osk3-squiggle var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-squiggle {
+  0%, 46% { stroke-dashoffset: 60; opacity: 1; }
+  64%     { stroke-dashoffset: 0;  opacity: 1; }
+  82%     { stroke-dashoffset: 0;  opacity: 1; }
+  92%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* Glue bottle squeeze + drop */
+.osk3-glue { transform-origin: 50% 100%; animation: osk3-squeeze var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-squeeze {
+  0%, 57% { transform: scale(1,1); }
+  61%     { transform: scale(1.07,.93); }
+  65%     { transform: scale(.98,1.03); }
+  69%, 100% { transform: scale(1,1); }
+}
+.osk3-glue-drop { transform-origin: 50% 100%; animation: osk3-drop var(--osk3-d) ease-out infinite; }
+@keyframes osk3-drop {
+  0%, 60% { opacity: 0; transform: translateY(4px) scale(0); }
+  65%     { opacity: 1; transform: translateY(-3px) scale(1); }
+  74%     { opacity: 1; transform: translateY(-5px) scale(.9); }
+  80%, 100% { opacity: 0; transform: translateY(-6px) scale(.8); }
+}
+
+/* Sparkles */
+.osk3-sparkle { transform-origin: 50% 50%; opacity: 0; animation: osk3-sparkle var(--osk3-d) ease-out infinite; }
+.osk3-sparkle-2 .osk3-sparkle { animation-delay: calc(var(--osk3-d) * .03); }
+.osk3-sparkle-3 .osk3-sparkle { animation-delay: calc(var(--osk3-d) * .06); }
+@keyframes osk3-sparkle {
+  0%, 64% { opacity: 0; transform: scale(0) rotate(0); }
+  71%     { opacity: 1; transform: scale(1) rotate(20deg); }
+  78%     { opacity: .9; transform: scale(.8) rotate(30deg); }
+  84%, 100% { opacity: 0; transform: scale(.8) rotate(35deg); }
+}
+
+.osk3-accent { transform-origin: 50% 50%; animation: osk3-accent var(--osk3-d) ease-in-out infinite; }
+@keyframes osk3-accent { 0%,100% { opacity: .55; transform: scale(.92); } 50% { opacity: 1; transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .osk3-root * { animation: none !important; }
+  .osk3-glue-drop, .osk3-snip-lines, .osk3-sparkle { opacity: 0; }
+}
+
+/* Card shell */
+.osk3-card {
+  width: 260px; border-radius: 28px; padding: 18px 18px 26px;
+  background: linear-gradient(#D9F4E2 0%, #ECFAF1 55%, #F4FCF7 100%);
+  box-shadow: 0 10px 24px rgba(30, 80, 200, .18), inset 0 0 0 3px rgba(255,255,255,.7);
+  text-align: center; font-family: &quot;Baloo 2&quot;, &quot;Nunito&quot;, system-ui, sans-serif;
+}
+.osk3-card h3 { margin: 4px 0 8px; font-size: 26px; line-height: 1.1; color: #14203D; font-weight: 800; }
+.osk3-card p  { margin: 0; font-size: 16px; line-height: 1.45; color: #2B3550; }
+</style><g class="osk3-base-cloud" fill="#E2F7EA"><ellipse cx="120" cy="206" rx="92" ry="13"></ellipse><circle cx="58" cy="202" r="14"></circle><circle cx="92" cy="197" r="18"></circle><circle cx="148" cy="197" r="18"></circle><circle cx="182" cy="202" r="14"></circle><ellipse cx="128" cy="196" rx="84" ry="6" fill="#A8DDBB" opacity=".45"></ellipse></g><g stroke="#2FB36B" stroke-width="3.5" stroke-linecap="round" fill="none"><path class="osk3-accent osk3-accent-left" d="M20 126 l9 4 M18 139 l9 0"></path><path class="osk3-accent osk3-accent-right" d="M200 62 l6 -7 M212 72 l8 -3"></path></g><g class="osk3-scene"><g class="osk3-pencil-cup-group"><g class="osk3-cup-pencil" transform="rotate(12 92 110)"><rect x="88" y="66" width="9" height="50" rx="2" fill="#4CC07A"></rect><path d="M88 66 L92.5 54 L97 66 Z" fill="#F6D7A7"></path><path d="M91 58 L92.5 54 L94 58 Z" fill="#3B2A4A"></path></g><g class="osk3-scissors"><g class="osk3-scissor-left"><path d="M75 104 L68 82" stroke="#2F5BD8" stroke-width="5" stroke-linecap="round"></path><circle cx="63" cy="72" r="10" fill="none" stroke="#2F5BD8" stroke-width="5.5"></circle><path d="M75 104 L82 132" stroke="#C7CFDD" stroke-width="4.5" stroke-linecap="round"></path></g><g class="osk3-scissor-right"><path d="M75 104 L82 82" stroke="#3B7BEA" stroke-width="5" stroke-linecap="round"></path><circle cx="87" cy="72" r="10" fill="none" stroke="#3B7BEA" stroke-width="5.5"></circle><path d="M75 104 L68 132" stroke="#DCE2EC" stroke-width="4.5" stroke-linecap="round"></path></g><circle cx="75" cy="104" r="3" fill="#8A95AB"></circle></g><g class="osk3-cup"><path d="M50 110 H100 L96 182 Q95 189 88 189 H62 Q55 189 54 182 Z" fill="#3B7BEA"></path><path d="M58 118 L60 178" stroke="#6FA3F5" stroke-width="4" stroke-linecap="round" opacity=".7"></path><rect x="46" y="103" width="58" height="11" rx="5.5" fill="#5B95F2"></rect></g></g><g class="osk3-snip-lines" stroke="#2FB36B" stroke-width="3.5" stroke-linecap="round"><path d="M50 64 l-8 -4 M54 52 l-5 -7 M100 64 l8 -4 M96 52 l5 -7"></path></g><g class="osk3-glue"><path class="osk3-glue-drop" d="M118 80 C121 84 122 86 122 88 A4 4 0 0 1 114 88 C114 86 115 84 118 80 Z" fill="#FFFFFF" stroke="#DCE3EE" stroke-width="1.2"></path><rect class="osk3-glue-nozzle" x="115.5" y="89" width="5" height="14" rx="2.5" fill="#F06A2E"></rect><path class="osk3-glue-cap" d="M107 120 L113 102 H123 L129 120 Z" fill="#FF8A3D" stroke="#FF8A3D" stroke-width="2" stroke-linejoin="round"></path><rect class="osk3-glue-body" x="104" y="118" width="28" height="70" rx="8" fill="#FFFFFF" stroke="#DCE3EE" stroke-width="1.5"></rect><rect class="osk3-glue-label" x="104" y="140" width="28" height="24" fill="#FF8A3D"></rect><path d="M111 152 H125" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></path><path d="M110 124 V134" stroke="#EEF2F8" stroke-width="3" stroke-linecap="round"></path></g><g class="osk3-blocks"><g class="osk3-block-blue"><rect x="174" y="150" width="11" height="8" rx="2.5" fill="#2F5BD8"></rect><rect x="193" y="150" width="11" height="8" rx="2.5" fill="#2F5BD8"></rect><rect x="170" y="156" width="40" height="32" rx="6" fill="#3B7BEA"></rect><rect x="175" y="161" width="6" height="22" rx="3" fill="#6FA3F5" opacity=".7"></rect></g><g class="osk3-block-yellow"><rect x="140" y="144" width="11" height="8" rx="2.5" fill="#F2B01E"></rect><rect x="159" y="144" width="11" height="8" rx="2.5" fill="#F2B01E"></rect><rect x="136" y="150" width="40" height="38" rx="6" fill="#FFC93C"></rect><rect x="141" y="155" width="6" height="28" rx="3" fill="#FFE08A" opacity=".8"></rect></g><g class="osk3-block-red"><rect x="148" y="106" width="11" height="8" rx="2.5" fill="#D9493D"></rect><rect x="167" y="106" width="11" height="8" rx="2.5" fill="#D9493D"></rect><rect x="144" y="112" width="40" height="34" rx="6" fill="#F2675A"></rect><rect x="149" y="117" width="6" height="24" rx="3" fill="#FF968B" opacity=".75"></rect></g></g><path class="osk3-squiggle" d="M160 198 q6 -8 12 0 t12 0 t12 0 t12 0" fill="none" stroke="#2FB36B" stroke-width="3.5" stroke-linecap="round"></path><g class="osk3-pencil" transform="translate(54 206) rotate(-10)"><g class="osk3-pencil-move"><rect x="-14" y="-8" width="14" height="16" rx="4" fill="#FF8FB0"></rect><rect x="-2" y="-8" width="7" height="16" fill="#C7CDD8"></rect><rect x="5" y="-8" width="78" height="16" fill="#FFC93C"></rect><rect x="5" y="-2" width="78" height="4" fill="#F2B01E"></rect><path d="M83 -8 L103 0 L83 8 Z" fill="#F6D7A7"></path><path d="M97 -2.4 L103 0 L97 2.4 Z" fill="#3B2A4A"></path></g></g></g><g class="osk3-sparkle-1" transform="translate(130 68) scale(1)"><path class="osk3-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#FFC93C"></path></g><g class="osk3-sparkle-2" transform="translate(208 124) scale(0.85)"><path class="osk3-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#4CC07A"></path></g><g class="osk3-sparkle-3" transform="translate(30 94) scale(0.8)"><path class="osk3-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#FFC93C"></path></g></svg>

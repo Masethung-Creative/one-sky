@@ -10,6 +10,8 @@ export type FrameSet = {
   eyebrow: string;
   title: string;
   wide: boolean;
+  // How many stage heights the set lasts, when it needs longer than usual.
+  length?: number;
   // A function places the heading itself, for a set that doesn't start with it.
   body: ReactNode | ((head: ReactNode) => ReactNode);
 };
@@ -21,7 +23,9 @@ type Span = { start: number; end: number; overflow: number };
 const LEAD_IN = 0.7;
 // On phones the same timeline plays over this share of the distance, so each set takes about two swipes.
 const TOUCH_PACE = 0.55;
-const BODY_ITEMS = ".lead, .goal, .text-link, .step, .card, .preview-screen, .fine, .sec-btn, .faq-list";
+// The step icons rest here, in seconds of their own animation, with everything in place.
+const ICON_FINISHED = 2.5;
+const BODY_ITEMS = ".lead, .goal, .text-link, .step, .card, .preview-screen, .fine, .sec-btn, .faq-list, .why-decor";
 
 function FramePanel({ set, panelRef }: { set: FrameSet; panelRef: RefObject<HTMLDivElement | null> }) {
   const head = (
@@ -66,7 +70,7 @@ function AnimatedFrame({ sets, className, hold, onLast, children }: {
   const spans: Span[] = [];
   let at = 0;
   overflows.forEach((overflow, i) => {
-    const length = (i === sets.length - 1 ? beat * hold : beat * 1.3) + overflow;
+    const length = (i === sets.length - 1 ? beat * hold : beat * (sets[i].length ?? 1.3)) + overflow;
     spans.push({ start: at, end: at + length, overflow });
     at += length;
   });
@@ -122,7 +126,8 @@ function AnimatedFrame({ sets, className, hold, onLast, children }: {
         const eyebrow = panel.querySelector(".eyebrow");
         const words = panel.querySelectorAll(".frame-word");
         const items = panel.querySelectorAll(BODY_ITEMS);
-        const line = panel.querySelector(".steps-line");
+        const lines = panel.querySelectorAll(".steps-line");
+        const icons = panel.querySelectorAll(".step-icon");
         const cards = panel.querySelectorAll(".card");
 
         gsap.set(panel, { autoAlpha: first ? 1 : 0, y: 0 });
@@ -130,20 +135,29 @@ function AnimatedFrame({ sets, className, hold, onLast, children }: {
         gsap.set(words, { yPercent: 115, rotate: 5 });
         gsap.set(items, { autoAlpha: 0, y: 60 });
         if (cards.length) gsap.set(cards, { scale: 0.86, rotate: -3 });
-        if (line) gsap.set(line, { scaleX: 0 });
+        if (lines.length) gsap.set(lines, { scaleX: 0 });
+        if (icons.length) gsap.set(icons, { "--icon-time": 0 });
 
         if (!first) tl.set(panel, { autoAlpha: 1 }, start);
         tl.to(eyebrow, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" }, start);
         tl.to(words, { yPercent: 0, rotate: 0, duration: 0.3, ease: "back.out(1.5)", stagger: 0.025 }, start + 0.03);
         tl.to(items, { autoAlpha: 1, y: 0, duration: 0.28, ease: "power3.out", stagger: 0.05 }, bodyAt);
         if (cards.length) tl.to(cards, { scale: 1, rotate: 0, duration: 0.28, ease: "back.out(1.7)", stagger: 0.05 }, bodyAt);
-        if (line) tl.to(line, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, bodyAt + 0.05);
+        // Each icon plays in turn, and a line reaches out to the next one once it has finished.
+        if (icons.length) {
+          const turn = (end - 0.45 - settled) / icons.length;
+          icons.forEach((icon, n) => {
+            const at = settled + turn * n;
+            tl.to(icon, { "--icon-time": ICON_FINISHED, duration: turn * 0.8, ease: "none" }, at);
+            if (lines[n]) tl.to(lines[n], { scaleX: 1, duration: turn * 0.2, ease: "none" }, at + turn * 0.8);
+          });
+        }
         if (span.overflow) tl.to(panel, { y: -span.overflow, duration: span.overflow / beat, ease: "none" }, settled);
 
         if (!last) {
           const leave = end - 0.3;
           tl.to(items, { autoAlpha: 0, y: -50, duration: 0.2, ease: "power2.in", stagger: 0.02 }, leave);
-          if (line) tl.to(line, { autoAlpha: 0, duration: 0.15 }, leave);
+          if (lines.length) tl.to(lines, { autoAlpha: 0, duration: 0.15 }, leave);
           tl.to(words, { yPercent: -115, duration: 0.2, ease: "power2.in", stagger: 0.012 }, leave + 0.06);
           tl.to(eyebrow, { autoAlpha: 0, y: -20, duration: 0.15 }, leave + 0.1);
           tl.set(panel, { autoAlpha: 0 }, end);

@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="osk5-root" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Progress tracking" style="--osk5-d:4s;overflow:visible"><style>
+:where(.osk5-root *:not([transform])) { transform-box: fill-box; }
+.osk5-root.is-paused * { animation-play-state: paused !important; }
+
+/* Board float + gentle rock */
+.osk5-board { transform-origin: 50% 100%; animation: osk5-float var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%      { transform: translateY(-4px) rotate(-1.5deg); }
+  50%      { transform: translateY(0) rotate(0deg); }
+  75%      { transform: translateY(-3px) rotate(1.5deg); }
+}
+
+/* Bars grow one by one, then settle back down for the loop */
+.osk5-bar { transform-origin: 50% 100%; animation: osk5-grow var(--osk5-d) cubic-bezier(.3,.7,.4,1) infinite backwards; }
+.osk5-bar-2 { animation-delay: calc(var(--osk5-d) * .06); }
+.osk5-bar-3 { animation-delay: calc(var(--osk5-d) * .12); }
+.osk5-bar-4 { animation-delay: calc(var(--osk5-d) * .18); }
+@keyframes osk5-grow {
+  0%, 4% { transform: scaleY(.12); }
+  14%    { transform: scaleY(1.12); }
+  18%    { transform: scaleY(.95); }
+  22%, 76% { transform: scaleY(1); }
+  90%, 100% { transform: scaleY(.12); }
+}
+/* Live-chart breathing on the inner rect */
+.osk5-bar-bob { transform-origin: 50% 100%; animation: osk5-bob calc(var(--osk5-d) / 4) ease-in-out infinite; }
+.osk5-bar-2 .osk5-bar-bob { animation-delay: calc(var(--osk5-d) / -16); }
+.osk5-bar-3 .osk5-bar-bob { animation-delay: calc(var(--osk5-d) / -8); }
+.osk5-bar-4 .osk5-bar-bob { animation-delay: calc(var(--osk5-d) * -3 / 16); }
+@keyframes osk5-bob { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.93); } }
+
+/* Green ticks pop above each bar as it completes */
+.osk5-check { transform-origin: 50% 100%; opacity: 0; animation: osk5-check var(--osk5-d) ease-out infinite backwards; }
+.osk5-check-2 .osk5-check { animation-delay: calc(var(--osk5-d) * .06); }
+.osk5-check-3 .osk5-check { animation-delay: calc(var(--osk5-d) * .12); }
+.osk5-check-4 .osk5-check { animation-delay: calc(var(--osk5-d) * .18); }
+@keyframes osk5-check {
+  0%, 12% { opacity: 0; transform: translateY(6px) scale(0); }
+  17%     { opacity: 1; transform: translateY(-4px) scale(1.2); }
+  21%     { opacity: 1; transform: translateY(0) scale(1); }
+  40%     { opacity: 1; transform: translateY(-3px) scale(1); }
+  48%, 100% { opacity: 0; transform: translateY(-10px) scale(.8); }
+}
+
+/* Trend line draws, then keeps flowing */
+.osk5-trend { stroke-dasharray: 110; animation: osk5-trend var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-trend {
+  0%, 30% { stroke-dashoffset: 110; opacity: 1; }
+  46%     { stroke-dashoffset: 0;   opacity: 1; }
+  82%     { stroke-dashoffset: 0;   opacity: 1; }
+  92%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.osk5-trend-flow { stroke-dasharray: 4 14; animation: osk5-flow calc(var(--osk5-d) / 4) linear infinite, osk5-flowfade var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-flow { from { stroke-dashoffset: 36; } to { stroke-dashoffset: 0; } }
+@keyframes osk5-flowfade { 0%, 46% { opacity: 0; } 52%, 80% { opacity: .9; } 90%, 100% { opacity: 0; } }
+.osk5-arrow { transform-origin: 30% 50%; animation: osk5-arrow var(--osk5-d) ease-out infinite; }
+@keyframes osk5-arrow {
+  0%, 44% { opacity: 0; transform: translateX(-4px) scale(0); }
+  49%     { opacity: 1; transform: translateX(2px) scale(1.3); }
+  53%     { opacity: 1; transform: translateX(0) scale(1); }
+  60%     { opacity: 1; transform: translateX(3px) scale(1); }
+  67%     { opacity: 1; transform: translateX(0) scale(1); }
+  74%     { opacity: 1; transform: translateX(3px) scale(1); }
+  82%     { opacity: 1; transform: translateX(0) scale(1); }
+  92%, 100% { opacity: 0; transform: translateX(0) scale(.8); }
+}
+
+/* Star: slow continuous spin + burst */
+.osk5-star-spin { transform-origin: 50% 50%; animation: osk5-spin calc(var(--osk5-d) * 2) linear infinite; }
+@keyframes osk5-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.osk5-star { transform-origin: 50% 50%; animation: osk5-star var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-star {
+  0%, 100% { transform: scale(.9); }
+  20%      { transform: scale(1); }
+  40%      { transform: scale(.9); }
+  47%      { transform: scale(1.35); }
+  53%      { transform: scale(.95); }
+  58%      { transform: scale(1.08); }
+  64%      { transform: scale(1); }
+  82%      { transform: scale(1.04); }
+}
+.osk5-star-glow { transform-origin: 50% 50%; animation: osk5-glow var(--osk5-d) ease-out infinite; }
+@keyframes osk5-glow {
+  0%, 44% { opacity: 0; transform: scale(.5); }
+  49%     { opacity: .6; transform: scale(1.1); }
+  64%, 100% { opacity: 0; transform: scale(1.6); }
+}
+.osk5-star-rays { transform-origin: 50% 50%; animation: osk5-rays var(--osk5-d) ease-out infinite; }
+@keyframes osk5-rays {
+  0%, 45% { opacity: 0; transform: scale(.6); }
+  50%     { opacity: 1; transform: scale(1); }
+  60%, 100% { opacity: 0; transform: scale(1.3); }
+}
+
+/* Trophy: continuous sway, hop on the burst, shine sweep */
+.osk5-trophy-sway { transform-origin: 50% 100%; animation: osk5-sway var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  25%      { transform: rotate(4deg); }
+  50%      { transform: rotate(-4deg); }
+  75%      { transform: rotate(4deg); }
+}
+.osk5-trophy { transform-origin: 50% 100%; animation: osk5-trophy var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-trophy {
+  0%, 52% { transform: translateY(0) scale(1,1); }
+  55%     { transform: translateY(0) scale(1.08,.9); }
+  60%     { transform: translateY(-12px) scale(.96,1.06); }
+  65%     { transform: translateY(0) scale(1.06,.93); }
+  69%     { transform: translateY(-3px) scale(1,1); }
+  72%, 100% { transform: translateY(0) scale(1,1); }
+}
+.osk5-shine-band { animation: osk5-sweep var(--osk5-d) ease-in-out infinite; }
+@keyframes osk5-sweep {
+  0%, 56% { transform: translateX(-30px); opacity: 0; }
+  58%     { opacity: .9; }
+  70%     { transform: translateX(34px); opacity: .9; }
+  72%, 100% { transform: translateX(34px); opacity: 0; }
+}
+
+/* Sparkles: twice per loop */
+.osk5-sparkle { transform-origin: 50% 50%; opacity: 0; animation: osk5-sparkle calc(var(--osk5-d) / 2) ease-out infinite; }
+.osk5-sparkle-2 .osk5-sparkle { animation-delay: calc(var(--osk5-d) / -6); }
+.osk5-sparkle-3 .osk5-sparkle { animation-delay: calc(var(--osk5-d) / -3); }
+@keyframes osk5-sparkle {
+  0%      { opacity: 0; transform: scale(0) rotate(0); }
+  15%     { opacity: 1; transform: scale(1.1) rotate(25deg); }
+  30%     { opacity: .9; transform: scale(.8) rotate(40deg); }
+  45%, 100% { opacity: 0; transform: scale(.6) rotate(50deg); }
+}
+
+.osk5-accent { transform-origin: 50% 50%; animation: osk5-accent calc(var(--osk5-d) / 2) ease-in-out infinite; }
+@keyframes osk5-accent { 0%,100% { opacity: .5; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .osk5-root * { animation: none !important; }
+  .osk5-star-glow, .osk5-star-rays, .osk5-sparkle, .osk5-check, .osk5-shine-band, .osk5-trend-flow { opacity: 0; }
+}
+
+/* Card shell */
+.osk5-card {
+  width: 260px; border-radius: 28px; padding: 18px 18px 26px;
+  background: linear-gradient(#D6F0FF 0%, #E9F7FF 55%, #F3FBFF 100%);
+  box-shadow: 0 10px 24px rgba(30, 80, 200, .18), inset 0 0 0 3px rgba(255,255,255,.7);
+  text-align: center; font-family: &quot;Baloo 2&quot;, &quot;Nunito&quot;, system-ui, sans-serif;
+}
+.osk5-card h3 { margin: 4px 0 8px; font-size: 26px; line-height: 1.1; color: #14203D; font-weight: 800; }
+.osk5-card p  { margin: 0; font-size: 16px; line-height: 1.45; color: #2B3550; }
+</style><defs><clipPath id="osk5-cup-clip"><path d="M168 150 H204 Q204 176 186 178 Q168 176 168 150 Z"></path></clipPath></defs><g class="osk5-base-cloud" fill="#E0F4FF"><ellipse cx="120" cy="206" rx="92" ry="13"></ellipse><circle cx="58" cy="202" r="14"></circle><circle cx="92" cy="197" r="18"></circle><circle cx="148" cy="197" r="18"></circle><circle cx="182" cy="202" r="14"></circle><ellipse cx="124" cy="199" rx="82" ry="6" fill="#A6D8F2" opacity=".45"></ellipse></g><g stroke="#1FB5E0" stroke-width="3.5" stroke-linecap="round" fill="none"><path class="osk5-accent osk5-accent-left" d="M30 62 l-6 -7 M20 74 l-8 -3"></path><path class="osk5-accent osk5-accent-right" d="M214 112 l8 -4 M216 126 l9 1"></path></g><g class="osk5-board"><rect x="40" y="82" width="140" height="102" rx="16" fill="#C9E0FA"></rect><rect class="osk5-board-panel" x="34" y="76" width="140" height="102" rx="16" fill="#FFFFFF" stroke="#D6E6FB" stroke-width="3"></rect><path d="M48 162 H160" stroke="#E3EDFB" stroke-width="3" stroke-linecap="round"></path><g class="osk5-bars"><g class="osk5-bar osk5-bar-1"><rect class="osk5-bar-bob" x="54" y="136" width="18" height="26" rx="4" fill="#8DBBF7"></rect></g><g class="osk5-bar osk5-bar-2"><rect class="osk5-bar-bob" x="80" y="122" width="18" height="40" rx="4" fill="#5B95F2"></rect></g><g class="osk5-bar osk5-bar-3"><rect class="osk5-bar-bob" x="106" y="106" width="18" height="56" rx="4" fill="#3B7BEA"></rect></g><g class="osk5-bar osk5-bar-4"><rect class="osk5-bar-bob" x="132" y="86" width="18" height="76" rx="4" fill="#2F5BD8"></rect></g></g><g class="osk5-check-1" transform="translate(63 123)"><g class="osk5-check"><circle cx="0" cy="0" r="6.5" fill="#34C27A"></circle><path d="M-3 0 L-0.8 2.4 L3.4 -2.4" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></g></g><g class="osk5-check-2" transform="translate(89 109)"><g class="osk5-check"><circle cx="0" cy="0" r="6.5" fill="#34C27A"></circle><path d="M-3 0 L-0.8 2.4 L3.4 -2.4" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></g></g><g class="osk5-check-3" transform="translate(115 93)"><g class="osk5-check"><circle cx="0" cy="0" r="6.5" fill="#34C27A"></circle><path d="M-3 0 L-0.8 2.4 L3.4 -2.4" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></g></g><g class="osk5-check-4" transform="translate(141 73)"><g class="osk5-check"><circle cx="0" cy="0" r="6.5" fill="#34C27A"></circle><path d="M-3 0 L-0.8 2.4 L3.4 -2.4" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></g></g><path class="osk5-trend" d="M54 132 Q80 128 96 116 T148 88" fill="none" stroke="#FFC93C" stroke-width="5" stroke-linecap="round"></path><path class="osk5-trend-flow" d="M54 132 Q80 128 96 116 T148 88" fill="none" stroke="#FFF1B8" stroke-width="2.4" stroke-linecap="round"></path><g transform="translate(148 88) rotate(-32)"><path class="osk5-arrow" d="M-2 -8 L10 0 L-2 8 Z" fill="#FFC93C" stroke="#FFC93C" stroke-width="3" stroke-linejoin="round"></path></g></g><g transform="translate(176 72)"><circle class="osk5-star-glow" cx="0" cy="0" r="30" fill="#FFE27A"></circle><g class="osk5-star-rays" stroke="#FFC93C" stroke-width="3.5" stroke-linecap="round"><path d="M0 -36 V-30 M31 -18 L26 -15 M31 18 L26 15 M-31 -18 L-26 -15"></path></g></g><g transform="translate(176 72) scale(2.3)"><g class="osk5-star"><g class="osk5-star-spin"><path d="M0 -10 L2.47 -3.4 L9.51 -3.09 L4 1.3 L5.88 8.09 L0 4.2 L-5.88 8.09 L-4 1.3 L-9.51 -3.09 L-2.47 -3.4 Z" fill="#FFC93C" stroke="#FFC93C" stroke-width="1.6" stroke-linejoin="round"></path><path d="M-3 -5 L-1.2 -3" stroke="#FFF1B8" stroke-width="1.4" stroke-linecap="round"></path></g></g></g><g class="osk5-trophy-sway"><g class="osk5-trophy"><path d="M171 156 Q158 155 160 165 Q162 172 172 170" fill="none" stroke="#F2B01E" stroke-width="4.5" stroke-linecap="round"></path><path d="M201 156 Q214 155 212 165 Q210 172 200 170" fill="none" stroke="#F2B01E" stroke-width="4.5" stroke-linecap="round"></path><path class="osk5-trophy-cup" d="M168 150 H204 Q204 176 186 178 Q168 176 168 150 Z" fill="#FFC93C"></path><g clip-path="url(#osk5-cup-clip)"><path class="osk5-shine-band" d="M170 182 L180 146 L187 146 L177 182 Z" fill="#FFF6D0"></path></g><rect x="182" y="176" width="8" height="9" fill="#F2B01E"></rect><rect class="osk5-trophy-base" x="172" y="184" width="28" height="10" rx="3.5" fill="#F2B01E"></rect><rect x="180" y="187" width="12" height="4" rx="2" fill="#FFE08A"></rect><g transform="translate(186 162) scale(.62)"><path d="M0 -10 L2.47 -3.4 L9.51 -3.09 L4 1.3 L5.88 8.09 L0 4.2 L-5.88 8.09 L-4 1.3 L-9.51 -3.09 L-2.47 -3.4 Z" fill="#FFFFFF"></path></g></g></g><g class="osk5-sparkle-1" transform="translate(146 52) scale(0.9)"><path class="osk5-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#1FB5E0"></path></g><g class="osk5-sparkle-2" transform="translate(212 150) scale(0.85)"><path class="osk5-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#FFC93C"></path></g><g class="osk5-sparkle-3" transform="translate(26 120) scale(0.8)"><path class="osk5-sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#1FB5E0"></path></g></svg>

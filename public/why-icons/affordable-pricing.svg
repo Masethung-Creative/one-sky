@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="t d">
+  <title id="t">Affordable pricing</title>
+  <desc id="d">A happy pink piggy bank catching a gold rupee coin.</desc>
+  <style>
+    /* 3s seamless loop. Every animated group uses its own box as origin. */
+    #pig, #coin, #coin-sparks, #slot-sparks, #pig-ear-left, #pig-ear-right, #pig-tail,
+    #pig-cheek-left, #pig-cheek-right, .sparkle, .accent { transform-box: fill-box; }
+
+    #pig { transform-origin: 50% 100%; animation: pig 3s ease-in-out infinite; }
+    @keyframes pig {
+      0%   { transform: translateY(0) scale(1,1); }
+      7%   { transform: translateY(-3px) scale(1,1); }
+      13%  { transform: translateY(0) scale(1,1); }
+      33%  { transform: translateY(0) scale(1,1); }
+      36%  { transform: translateY(0) scale(1.02,0.95); }
+      40%  { transform: translateY(0) scale(0.99,1.02); }
+      43%  { transform: translateY(0) scale(1,1); }
+      50%  { transform: translateY(-6px) scale(1,1); }
+      57%  { transform: translateY(0) scale(1,1); }
+      61%  { transform: translateY(-3px) scale(1,1); }
+      65%  { transform: translateY(0) scale(1,1); }
+      85%  { transform: translateY(-2px) scale(1,1); }
+      100% { transform: translateY(0) scale(1,1); }
+    }
+
+    #coin { transform-origin: 50% 50%; animation: coin 3s infinite; }
+    @keyframes coin {
+      0%, 13% { opacity: 0; transform: translateY(-18px) rotate(0deg); animation-timing-function: ease-out; }
+      18%     { opacity: 1; transform: translateY(-10px) rotate(-6deg); animation-timing-function: ease-in; }
+      33%     { opacity: 1; transform: translateY(56px) rotate(8deg); }
+      36%     { opacity: 0; transform: translateY(62px) rotate(8deg); }
+      100%    { opacity: 0; transform: translateY(-18px) rotate(0deg); }
+    }
+
+    #coin-sparks { transform-origin: 50% 50%; animation: coinSparks 3s ease-out infinite; }
+    @keyframes coinSparks {
+      0%, 15% { opacity: 0; transform: scale(0.6); }
+      20%     { opacity: 1; transform: scale(1); }
+      28%     { opacity: 0; transform: scale(1.1); }
+      100%    { opacity: 0; }
+    }
+
+    #slot-sparks { transform-origin: 50% 100%; animation: slotSparks 3s ease-out infinite; }
+    @keyframes slotSparks {
+      0%, 33% { opacity: 0; transform: scale(0.4); }
+      37%     { opacity: 1; transform: scale(1.05); }
+      45%     { opacity: 0; transform: scale(1.2); }
+      100%    { opacity: 0; }
+    }
+
+    #pig-cheek-left, #pig-cheek-right { animation: cheeks 3s ease-in-out infinite; }
+    @keyframes cheeks {
+      0%, 36% { opacity: 0.55; }
+      45%, 58% { opacity: 1; }
+      70%, 100% { opacity: 0.55; }
+    }
+
+    #pig-tail { transform-origin: 0% 60%; animation: tail 3s ease-in-out infinite; }
+    @keyframes tail {
+      0%, 40% { transform: rotate(0deg); }
+      45% { transform: rotate(-14deg); }
+      50% { transform: rotate(10deg); }
+      55% { transform: rotate(-8deg); }
+      60%, 100% { transform: rotate(0deg); }
+    }
+
+    #pig-ear-left  { transform-origin: 50% 100%; animation: earL 3s ease-in-out infinite; }
+    #pig-ear-right { transform-origin: 50% 100%; animation: earR 3s ease-in-out infinite; }
+    @keyframes earL { 0%,42% {transform: rotate(0)} 48% {transform: rotate(-8deg)} 55%,100% {transform: rotate(0)} }
+    @keyframes earR { 0%,44% {transform: rotate(0)} 50% {transform: rotate(8deg)} 57%,100% {transform: rotate(0)} }
+
+    .sparkle { transform-origin: 50% 50%; opacity: 0; animation: sparkle 3s ease-out infinite; }
+    #sparkle-left  .sparkle { animation-delay: 0s; }
+    #sparkle-top   .sparkle { animation-delay: 0.08s; }
+    #sparkle-right .sparkle { animation-delay: 0.16s; }
+    @keyframes sparkle {
+      0%, 60% { opacity: 0; transform: scale(0) rotate(0deg); }
+      67%     { opacity: 1; transform: scale(1) rotate(20deg); }
+      74%     { opacity: 0.9; transform: scale(0.8) rotate(30deg); }
+      80%     { opacity: 0; transform: scale(0.8) rotate(35deg); }
+      100%    { opacity: 0; transform: scale(0); }
+    }
+
+    .accent { transform-origin: 50% 50%; animation: accent 3s ease-in-out infinite; }
+    @keyframes accent { 0%,100% { opacity: .55; transform: scale(.92) } 50% { opacity: 1; transform: scale(1) } }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+      #coin { opacity: 1; }
+    }
+  </style>
+
+  <!-- Soft cream cloud base -->
+  <g id="base-cloud">
+    <ellipse cx="120" cy="206" rx="86" ry="13" fill="#FFF4DA"/>
+    <circle cx="62"  cy="202" r="14" fill="#FFF4DA"/>
+    <circle cx="94"  cy="197" r="18" fill="#FFF4DA"/>
+    <circle cx="146" cy="197" r="18" fill="#FFF4DA"/>
+    <circle cx="178" cy="202" r="14" fill="#FFF4DA"/>
+    <ellipse cx="120" cy="203" rx="54" ry="6" fill="#F2D49B" opacity=".45"/>
+  </g>
+
+  <!-- Accent marks -->
+  <g id="accent-marks" stroke="#2F6FE0" stroke-width="3.5" stroke-linecap="round" fill="none">
+    <path class="accent" d="M24 150 l8 3 M22 162 l9 0"/>
+    <path class="accent" d="M210 158 l-8 3 M213 170 l-9 -1"/>
+  </g>
+
+  <!-- Coin (drawn before pig so it slides behind the body into the slot) -->
+  <g id="coin">
+    <circle cx="125" cy="48" r="19" fill="#FFC93C" stroke="#F2A516" stroke-width="3"/>
+    <circle cx="125" cy="48" r="13" fill="none" stroke="#FFE08A" stroke-width="2"/>
+    <path d="M114 40 a12 12 0 0 1 8 -6" stroke="#FFF3C4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <g id="coin-symbol" transform="translate(125 48)" stroke="#B66A0A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M-7 -10 H7 M-7 -4 H7 M-4 -10 C6 -10 6 2 -4 2 L5 11"/>
+    </g>
+  </g>
+
+  <g id="coin-sparks" stroke="#FFC93C" stroke-width="3.5" stroke-linecap="round">
+    <path d="M96 34 l-7 -5 M94 48 l-8 0"/>
+    <path d="M154 34 l7 -5 M156 48 l8 0"/>
+  </g>
+
+  <!-- Piggy bank -->
+  <g id="pig">
+    <g id="pig-ear-left">
+      <path d="M60 118 Q52 90 76 95 Q82 108 78 118 Z" fill="#F48DB2"/>
+      <path d="M64 112 Q61 98 73 100 Q75 107 73 113 Z" fill="#FFC2D6"/>
+    </g>
+    <g id="pig-ear-right">
+      <path d="M86 106 Q86 82 104 90 Q103 102 98 110 Z" fill="#F48DB2"/>
+      <path d="M90 103 Q91 90 100 94 Q99 101 96 105 Z" fill="#FFC2D6"/>
+    </g>
+
+    <g id="pig-tail">
+      <path d="M184 140 C198 132 203 148 193 151 C185 153 187 141 199 136" stroke="#EE8FB0" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    </g>
+
+    <g id="pig-body">
+      <rect x="76"  y="178" width="19" height="23" rx="8" fill="#EE8FB0"/>
+      <rect x="98"  y="182" width="19" height="20" rx="8" fill="#E980A6"/>
+      <rect x="134" y="182" width="19" height="20" rx="8" fill="#E980A6"/>
+      <rect x="156" y="178" width="19" height="23" rx="8" fill="#EE8FB0"/>
+      <ellipse cx="122" cy="148" rx="66" ry="52" fill="#F9AEC8"/>
+      <ellipse cx="140" cy="126" rx="30" ry="15" fill="#FFD3E2" opacity=".75"/>
+      <ellipse cx="128" cy="186" rx="44" ry="10" fill="#F299BA" opacity=".55"/>
+      <rect id="coin-slot" x="108" y="101" width="34" height="7" rx="3.5" fill="#C9577F"/>
+    </g>
+
+    <g id="pig-face">
+      <path d="M72 140 Q78 133 84 140" stroke="#3B2A4A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M97 136 Q103 129 109 136" stroke="#3B2A4A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <ellipse cx="64" cy="160" rx="18" ry="14" fill="#F48DB2"/>
+      <ellipse cx="58" cy="160" rx="3" ry="4.5" fill="#C9577F"/>
+      <ellipse cx="70" cy="160" rx="3" ry="4.5" fill="#C9577F"/>
+      <path d="M88 166 Q95 173 103 166" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </g>
+    <circle id="pig-cheek-left"  cx="88"  cy="152" r="7" fill="#FF7FA6" opacity=".55"/>
+    <circle id="pig-cheek-right" cx="117" cy="148" r="7" fill="#FF7FA6" opacity=".55"/>
+  </g>
+
+  <!-- Impact sparks at the slot -->
+  <g id="slot-sparks" stroke="#FFC93C" stroke-width="3.5" stroke-linecap="round">
+    <path d="M106 92 l-7 -7 M125 87 v-9 M144 92 l7 -7"/>
+  </g>
+
+  <!-- Celebration sparkles -->
+  <g id="sparkle-left"  transform="translate(36 112)"><path class="sparkle" d="M0 -9 Q2 -2 9 0 Q2 2 0 9 Q-2 2 -9 0 Q-2 -2 0 -9 Z" fill="#FFC93C"/></g>
+  <g id="sparkle-top"   transform="translate(166 78)"><path class="sparkle" d="M0 -10 Q2.2 -2.2 10 0 Q2.2 2.2 0 10 Q-2.2 2.2 -10 0 Q-2.2 -2.2 0 -10 Z" fill="#FFD95A"/></g>
+  <g id="sparkle-right" transform="translate(206 120)"><path class="sparkle" d="M0 -8 Q1.8 -1.8 8 0 Q1.8 1.8 0 8 Q-1.8 1.8 -8 0 Q-1.8 -1.8 0 -8 Z" fill="#FFC93C"/></g>
+</svg>
