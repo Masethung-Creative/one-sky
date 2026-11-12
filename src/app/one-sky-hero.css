@@ -87,24 +87,6 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 .hero h1, .sub, .btn-row, .note { position: relative; z-index: 3; }
 .scroll-cue { z-index: 3; }
 .title-sun { z-index: 1; }
-/* Dog timing: body, head and legs share a 1.6s cycle, the arm runs at 0.8s and the tail at 0.4s. */
-.pup-bob { animation: pupBob 1.6s ease-in-out infinite; }
-.pup-head { animation: pupHead 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 45% 92%; }
-.pup-arm { animation: pupArm .8s ease-in-out infinite; transform-box: fill-box; transform-origin: 100% 100%; }
-.pup-tail { animation: pupTail .4s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 40%; }
-.pup-leg { transform-box: fill-box; transform-origin: 50% 0; }
-.pup-leg-a { animation: pupLegA 1.6s ease-in-out infinite; }
-.pup-leg-b { animation: pupLegB 1.6s ease-in-out infinite; }
-.pup-eye { animation: pupEye 11.24s step-end infinite; }
-.pup-wink { opacity: 0; animation: pupWink 11.24s step-end infinite; }
-@keyframes pupBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 3.5px; } }
-@keyframes pupHead { 0%, 100% { rotate: 0deg; } 50% { rotate: -3deg; } }
-@keyframes pupArm { 0%, 100% { rotate: -16deg; } 50% { rotate: 0deg; } }
-@keyframes pupTail { 0%, 100% { rotate: 0deg; } 50% { rotate: 15deg; } }
-@keyframes pupLegA { 0%, 100% { rotate: 0deg; } 50% { rotate: 5deg; } }
-@keyframes pupLegB { 0%, 100% { rotate: 0deg; } 50% { rotate: -5deg; } }
-@keyframes pupEye { 0%, 18.15%, 100% { opacity: 1; } 16.37% { opacity: 0; } }
-@keyframes pupWink { 0%, 18.15%, 100% { opacity: 0; } 16.37% { opacity: 1; } }
 .plane { position: absolute; z-index: 2; pointer-events: none; left: 0; top: 14%; width: clamp(98px, 12vw, 183px); animation: planeFly 28s linear 2s infinite both; }
 .plane svg { display: block; width: 100%; height: auto; overflow: visible; }
 .plane-bob { animation: planeBob 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
@@ -154,7 +136,7 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .w, .sub, .btn-row, .note, .scroll-cue, .sparkle path, .art-wave, .mascot-blink, .plane, .plane-bob, .prop, .pup-bob, .pup-head, .pup-arm, .pup-tail, .pup-leg-a, .pup-leg-b, .pup-eye, .pup-wink { animation: none; }
+  .w, .sub, .btn-row, .note, .scroll-cue, .sparkle path, .art-wave, .mascot-blink, .plane, .plane-bob, .prop { animation: none; }
   .plane { left: 16%; top: 6%; }
   .btn { transition: none; }
 }
