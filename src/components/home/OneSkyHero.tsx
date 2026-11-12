@@ -1,8 +1,8 @@
-import Fireflies from "./Fireflies";
-import HeroCharacters from "./HeroCharacters";
-import HeroCourseScene from "./HeroCourseScene";
-import { MascotBird, MascotOwl } from "./Mascots";
-import OneSkySections from "./OneSkySections";
+import Fireflies from "@/components/home/hero/Fireflies";
+import HeroCharacters from "@/components/home/hero/HeroCharacters";
+import HeroCourseScene from "@/components/home/hero/HeroCourseScene";
+import { MascotBird, MascotOwl } from "@/components/illustrations/Mascots";
+import OneSkySections from "@/components/home/OneSkySections";
 
 export default function OneSkyHero() {
   return (

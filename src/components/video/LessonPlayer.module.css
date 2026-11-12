@@ -1,0 +1,236 @@
+/* Styles for LessonPlayer.tsx. Spacing follows a 4px scale. */
+
+.player {
+  --accent: #ffc93c;
+  --panel: rgba(12, 22, 44, .92);
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 16 / 9;
+  border-radius: 24px;
+  background: #0b1424;
+  color: #fff;
+  box-shadow: 0 16px 40px rgba(10, 50, 130, .22);
+  font-family: var(--font-body);
+  user-select: none;
+}
+.player:focus-within { outline: none; }
+.isFullscreen { border-radius: 0; aspect-ratio: auto; }
+
+.video { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: contain; background: #0b1424; cursor: pointer; }
+
+/* Before the first play: a title over the cover picture. */
+.cover {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(4, 20, 50, .45) 0%, transparent 35%, transparent 60%, rgba(4, 20, 50, .7) 100%);
+  pointer-events: none;
+}
+.tag { align-self: flex-start; padding: 4px 12px; border-radius: 999px; background: var(--accent); color: #14203d; font-size: .8125rem; font-weight: 700; line-height: 20px; }
+.coverTitle { font-size: clamp(1rem, 4cqw, 1.5rem); font-weight: 700; line-height: 1.25; text-shadow: 0 2px 8px rgba(0, 0, 0, .4); }
+
+.bigPlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 14cqw, 80px);
+  height: clamp(56px, 14cqw, 80px);
+  padding: 0 0 0 4px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #14203d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform .2s var(--ease), background .2s;
+}
+.bigPlay svg { width: 44%; height: 44%; }
+.bigPlay:hover { transform: translate(-50%, -50%) scale(1.08); background: var(--accent); }
+.bigPlay:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  border: 4px solid rgba(255, 255, 255, .3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Captions sit just above the controls while they show, and drop lower when they hide. */
+.caption {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 16px;
+  text-align: center;
+  pointer-events: none;
+  transition: bottom .25s var(--ease);
+}
+.awake .caption { bottom: 84px; }
+.caption span {
+  display: inline;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, .75);
+  font-size: clamp(.875rem, 3cqw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: pre-line;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Control bar */
+.controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 12px 8px;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  background: linear-gradient(180deg, transparent, rgba(4, 12, 28, .85));
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .25s, transform .25s var(--ease);
+}
+.awake .controls { opacity: 1; transform: none; pointer-events: auto; }
+.player:not(.awake) { cursor: none; }
+
+.bar { display: flex; align-items: center; gap: 4px; }
+.spacer { flex: 1; }
+
+.button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background .15s, color .15s, transform .3s var(--ease);
+}
+.button:hover { background: rgba(255, 255, 255, .16); }
+.button:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+.on { color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+.turned svg { transform: rotate(45deg); transition: transform .3s var(--ease); }
+
+.time { padding: 0 8px; font-size: .8125rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Seek and volume sliders share one look: a yellow fill over a light track. */
+.seek, .volumeSlider {
+  --track: rgba(255, 255, 255, .3);
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.seek::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent) var(--played), rgba(255, 255, 255, .55) var(--played) var(--loaded), var(--track) var(--loaded));
+}
+.seek::-moz-range-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent) var(--played), rgba(255, 255, 255, .55) var(--played) var(--loaded), var(--track) var(--loaded));
+}
+.volumeSlider::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, #fff var(--played), var(--track) var(--played)); }
+.volumeSlider::-moz-range-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, #fff var(--played), var(--track) var(--played)); }
+.seek::-webkit-slider-thumb, .volumeSlider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 201, 60, .45);
+  -webkit-appearance: none;
+}
+.seek::-moz-range-thumb, .volumeSlider::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: #fff; }
+.seek:focus-visible, .volumeSlider:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.seek { margin-bottom: 4px; }
+
+.volume { display: flex; align-items: center; }
+.volumeSlider { width: 0; opacity: 0; transition: width .2s var(--ease), opacity .2s; }
+.volume:hover .volumeSlider, .volume:focus-within .volumeSlider { width: 72px; margin-right: 8px; opacity: 1; }
+
+/* Menus open upwards from their button. */
+.menuWrap { position: relative; }
+.menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 2;
+  min-width: 200px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
+  backdrop-filter: blur(8px);
+  /* Menus may rise above the video on small players, so they always show in full. */
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.menuHead { padding: 4px 8px 8px; color: rgba(255, 255, 255, .7); font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.menuBack { display: flex; align-items: center; gap: 4px; margin: -4px 0 0 -4px; padding: 4px 8px 4px 0; border: 0; border-radius: 8px; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.menuBack svg { width: 20px; height: 20px; }
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.menuItem:hover, .menuItem:focus-visible { background: rgba(255, 255, 255, .12); outline: none; }
+.menuItem svg { width: 20px; height: 20px; }
+.check { display: grid; place-items: center; width: 20px; color: var(--accent); }
+.menuLabel { flex: 1; }
+.menuValue { color: rgba(255, 255, 255, .7); font-weight: 500; }
+
+/* Narrow players: fewer buttons, so everything still fits. */
+@container (max-width: 420px) {
+  .hideSmall, .volumeSlider { display: none; }
+  .time { padding: 0 4px; font-size: .75rem; }
+  .button { width: 36px; height: 36px; }
+  .controls { padding: 16px 8px 4px; }
+  .awake .caption { bottom: 72px; }
+  .menu { min-width: 180px; padding: 4px; }
+  .menuItem { min-height: 32px; }
+  .menuHead { padding: 4px 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bigPlay, .controls, .caption, .button, .volumeSlider { transition: none; }
+}

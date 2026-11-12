@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { EnrolForm } from "@/components/PageParts";
-import PageShell from "@/components/PageShell";
+import { EnrolForm } from "@/components/pages/PageParts";
+import PageShell from "@/components/layout/PageShell";
 import { COURSES } from "@/content/site";
 
 type Props = { params: Promise<{ slug: string }> };

@@ -61,7 +61,7 @@ export default function AiToolsShow() {
         {tiles.map(([name, file], i) => (
           <li key={name} className="ai-tile" style={{ "--d": (i % 3) + Math.floor(i / 3) } as CSSProperties}>
             <span className="ai-tile-card">
-              <Image src={`/ai-logos/${file}`} alt="" width={180} height={76} />
+              <Image src={`/images/ai-tools/${file}`} alt="" width={180} height={76} />
             </span>
             <span className="ai-tile-name">{name}</span>
           </li>

@@ -2,9 +2,22 @@
 
 import Link from "next/link";
 import { FAQS } from "@/content/site";
-import { COURSE_URL } from "./HeroCourseScene";
-import { Faq } from "./PageParts";
-import ScrollFrame, { type FrameSet } from "./ScrollFrame";
+import { COURSE_URL } from "@/components/home/hero/HeroCourseScene";
+import { Faq } from "@/components/pages/PageParts";
+import ScrollFrame, { type FrameSet } from "@/components/home/sections/ScrollFrame";
+import LessonPlayer from "@/components/video/LessonPlayer";
+
+// The free Chapter 1 video. Its files live in public/videos/chapter-1.
+const CHAPTER_ONE = {
+  title: "Chapter 1 · The Green Notebook",
+  poster: "/videos/chapter-1/poster.jpg",
+  sources: [
+    { height: 1080, src: "/videos/chapter-1/chapter-1-1080p.mp4" },
+    { height: 720, src: "/videos/chapter-1/chapter-1-720p.mp4" },
+    { height: 480, src: "/videos/chapter-1/chapter-1-480p.mp4" },
+  ],
+  captions: [{ lang: "en", label: "English", src: "/videos/chapter-1/captions-en.vtt" }],
+};
 
 const AUDIENCES = [
   { title: "👨‍👩‍👧 Parents", items: ["You make the purchase for your child", "Guided activities you can do together", "See each part completed and quiz scores"] },
@@ -21,14 +34,12 @@ const SETS: FrameSet[] = [
     body: (head) => (
       <div className="preview-grid">
         <div className="preview-screen">
-          <span className="demo-tag">Demo preview</span>
-          <span className="play" aria-hidden="true">▶</span>
-          <span className="preview-caption">Chapter 1, The Green Notebook</span>
+          <LessonPlayer {...CHAPTER_ONE} />
         </div>
         <div>
           {head}
           <p className="lead">Chapter 1 of <em>Ajji, This Is for You</em>: Nila finds Ajji’s faded green notebook and an unfinished memory. Should they ask AI to finish it, or ask Ajji?</p>
-          <p className="fine">This preview is a placeholder. Add the real lesson video when it’s ready.</p>
+          <p className="fine">About 1 minute · English captions</p>
           <Link className="sec-btn" href={COURSE_URL}>View the full course</Link>
         </div>
       </div>

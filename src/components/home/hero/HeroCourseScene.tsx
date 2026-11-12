@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
-import AiToolsShow from "./AiToolsShow";
+import AiToolsShow from "@/components/home/hero/AiToolsShow";
 
 export const COURSE_URL = "/courses/ai-foundation";
 
@@ -179,7 +179,7 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
 
   return (
     <div className="scene-track" ref={track} style={{ height: base + layout.stage + layout.overflow }}>
-      <link rel="prefetch" href="/coco-reward.html" />
+      <link rel="prefetch" href="/embeds/coco-reward.html" />
       <span className="scene-anchor" id="course" style={{ top: base * 0.96 }} />
       <div className="scene-stage" ref={stage}>
         <div className="scene-hero" ref={heroLayer}>{hero}</div>
@@ -205,7 +205,7 @@ function AnimatedScene({ hero }: { hero: ReactNode }) {
           </div>
         </motion.section>
         <motion.div className="scene-dog" style={{ width: DOG_W, height: DOG_W * DOG_RATIO, x: dogX, y: dogY, scale: dogScale, opacity: dogIn }}>
-          {dogOn && <iframe src="/coco-reward.html" title={DOG_TITLE} />}
+          {dogOn && <iframe src="/embeds/coco-reward.html" title={DOG_TITLE} />}
         </motion.div>
       </div>
     </div>
@@ -225,7 +225,7 @@ function StaticScene({ hero }: { hero: ReactNode }) {
             <p className="eyebrow">The Course</p>
             <h2>AI Foundation</h2>
           </div>
-          <CourseContent dogSlot={<div className="course-dog"><iframe src="/coco-reward.html" title={DOG_TITLE} loading="lazy" /></div>} slide={still} fade={shown} />
+          <CourseContent dogSlot={<div className="course-dog"><iframe src="/embeds/coco-reward.html" title={DOG_TITLE} loading="lazy" /></div>} slide={still} fade={shown} />
           <div className="made-for"><MadeFor /></div>
         </div>
       </section>

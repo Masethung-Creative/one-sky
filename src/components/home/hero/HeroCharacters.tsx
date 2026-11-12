@@ -18,7 +18,7 @@ export default function HeroCharacters() {
         renderer: "svg",
         loop: !still,
         autoplay: !still,
-        path: "/lottie/characters-waving.json",
+        path: "/animations/characters-waving.json",
       });
       destroy = () => animation.destroy();
     });

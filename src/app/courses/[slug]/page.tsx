@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, Reveal } from "@/components/PageParts";
-import PageShell from "@/components/PageShell";
+import { Card, Reveal } from "@/components/pages/PageParts";
+import PageShell from "@/components/layout/PageShell";
 import { COURSES } from "@/content/site";
 
 type Props = { params: Promise<{ slug: string }> };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PageShell from "@/components/PageShell";
-import { SITE_PAGES } from "@/components/SitePages";
+import PageShell from "@/components/layout/PageShell";
+import { SITE_PAGES } from "@/components/pages/SitePages";
 
 type Props = { params: Promise<{ page: string }> };
 

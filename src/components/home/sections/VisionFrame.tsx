@@ -4,9 +4,9 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import CrewFlight, { type CrewFlightHandle } from "./CrewFlight";
-import ScrollFrame, { type FrameSet } from "./ScrollFrame";
-import { BackpackIcon, BookIcon, ScreenIcon } from "./StepIcons";
+import CrewFlight, { type CrewFlightHandle } from "@/components/illustrations/CrewFlight";
+import ScrollFrame, { type FrameSet } from "@/components/home/sections/ScrollFrame";
+import { BackpackIcon, BookIcon, ScreenIcon } from "@/components/illustrations/StepIcons";
 
 const STEPS = [
   { Icon: BookIcon, title: "Explore the Course", text: "See what’s inside and watch the free story preview with your child." },
@@ -80,7 +80,7 @@ const SETS: FrameSet[] = [
           {REASONS.map(([icon, title, text]) => (
             <div key={title} className="card why-card">
               <div className="why-card-face">
-                <Image className="why-card-icon" src={`/why-icons/${icon}.svg`} alt="" width={240} height={240} />
+                <Image className="why-card-icon" src={`/images/why-one-sky/${icon}.svg`} alt="" width={240} height={240} />
                 <div className="why-card-body">
                   <svg className="why-card-cloud" viewBox="0 0 240 26" preserveAspectRatio="none" aria-hidden="true">
                     <path d="M0 26 V16 Q20 2 44 12 Q68 -2 98 11 Q122 -2 148 11 Q176 0 200 13 Q222 4 240 16 V26 Z" />

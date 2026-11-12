@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
-import { BIRD_GEAR, CREW_GEAR, OWL_GEAR } from "./CrewGear";
-import { MascotBird, MascotOwl } from "./Mascots";
+import { BIRD_GEAR, CREW_GEAR, OWL_GEAR } from "@/components/illustrations/CrewGear";
+import { MascotBird, MascotOwl } from "@/components/illustrations/Mascots";
 
 export type CrewFlightHandle = { seek: (progress: number) => void };
 
@@ -163,7 +163,7 @@ export default function CrewFlight({ ref }: { ref: Ref<CrewFlightHandle> }) {
     const load = async () => {
       const [{ default: lottie }, art] = await Promise.all([
         import("lottie-web"),
-        fetch("/lottie/characters-waving.json").then((r) => r.json()),
+        fetch("/animations/characters-waving.json").then((r) => r.json()),
       ]);
       if (gone) return;
       crew.current = SEATS.map(({ name }) => {

@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# One Sky
 
-## Getting Started
+The website for **One Sky**, a fun, parent-guided first course in AI for children (Class 3 to 12), priced at ₹385.
 
-First, run the development server:
+Live site: https://one-sky-demo.vercel.app
+
+## Run it on your computer
+
+You need [Node.js](https://nodejs.org) (version 20 or newer).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install      # once, to download the packages
+npm run dev      # start the site at http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other commands:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `npm run build` | Builds the site the way Vercel will. Run it before pushing to catch errors. |
+| `npm run start` | Serves that build at http://localhost:3000. |
+| `npm run lint` | Checks the code for common mistakes. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How it goes live
 
-## Learn More
+The site is hosted on **Vercel** and linked to this GitHub repository. Every push to the `main` branch is published automatically, usually within a minute.
 
-To learn more about Next.js, take a look at the following resources:
+## Folders
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+public/                      Files the site serves exactly as they are
+├── animations/              The waving characters animation (Lottie JSON)
+├── embeds/                  The Coco reward mini-page shown inside the course scene
+├── images/
+│   ├── ai-tools/            Logos of the AI tools shown in the hero
+│   ├── brand/               One Sky logos (header and footer)
+│   └── why-one-sky/         The five animated icons on the Why One Sky cards
+└── videos/
+    └── chapter-1/           Free preview video in 1080p, 720p and 480p, its cover image and English captions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+src/
+├── app/                     The pages. Each folder is a web address (see "Pages" below)
+├── components/              The building blocks the pages are made of
+│   ├── layout/              Header, footer and the frame around inner pages
+│   ├── home/                The home page
+│   │   ├── hero/            The top scene: title, characters, fireflies, AI tools
+│   │   └── sections/        The scrolling scenes below: How It Works, Why One Sky, Preview, FAQ
+│   ├── illustrations/       Drawn characters and icons (owl, bluebird, planes, step icons)
+│   ├── pages/               Sections used by the other pages (About, Schools, Contact…)
+│   └── video/               The lesson video player with captions and settings
+├── content/                 The words the site shows: courses, FAQs, forms, policies
+└── styles/                  The style sheets (colours, spacing, layout)
+```
 
-## Deploy on Vercel
+Files that are not part of the website:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| File or folder | Purpose |
+|---|---|
+| `media-source/` | Original, uncompressed media. Kept on your computer only; it is not uploaded to GitHub. |
+| `AGENTS.md`, `CLAUDE.md`, `.claude/` | Notes for AI coding assistants. |
+| `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs` | Settings for the tools that build and check the site. |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Pages
+
+| Address | File |
+|---|---|
+| `/` | `src/app/page.tsx` |
+| `/about`, `/schools`, `/teacher-corner`, `/giving-back`, `/sponsor-learners`, `/book-a-demo`, `/contact`, `/reviews`, `/help`, `/payment-support`, `/dashboard`, `/terms-conditions`, `/privacy-policy`, `/refund-policy` | `src/app/[page]/page.tsx`, with each page's content in `src/components/pages/SitePages.tsx` |
+| `/courses/ai-foundation` | `src/app/courses/[slug]/page.tsx` |
+| `/courses/ai-foundation/enrol` | `src/app/courses/[slug]/enrol/page.tsx` |
+
+## Common changes
+
+- **Change text, prices or FAQs:** edit `src/content/site.ts`.
+- **Change a policy page:** edit `src/content/policies.json`.
+- **Replace the preview video:** put new files in `public/videos/chapter-1/` with the same names, or add a folder for a new chapter and point to it in `src/components/home/sections/GuideFrame.tsx`.
+- **Add captions in another language:** add a `.vtt` file next to `captions-en.vtt`, then add a line to `captions` in `GuideFrame.tsx`. It appears in the player's CC menu automatically.
+- **Change colours or spacing:** edit the files in `src/styles/`.
+
+## Built with
+
+[Next.js](https://nextjs.org) 16 · React 19 · Tailwind CSS 4 · [GSAP](https://gsap.com) for scroll animation · [Motion](https://motion.dev) · [lottie-web](https://github.com/airbnb/lottie-web) for the characters

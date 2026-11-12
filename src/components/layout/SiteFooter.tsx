@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import HomeLink from "./HomeLink";
+import HomeLink from "@/components/layout/HomeLink";
 
 const FOOTER_LINKS = [
   { title: "Company", links: [["About Us", "about"], ["Reviews", "reviews"], ["Terms & Conditions", "terms-conditions"], ["Privacy Policy", "privacy-policy"], ["Refund Policy", "refund-policy"]] },
@@ -15,7 +15,7 @@ export default function SiteFooter() {
         <div>
           <p className="footer-brand" translate="no">
             <HomeLink aria-label="One Sky home">
-              <Image src="/one-sky-logo-footer.png" alt="" width={52} height={40} />
+              <Image src="/images/brand/one-sky-logo-footer.png" alt="" width={52} height={40} />
               One Sky
             </HomeLink>
           </p>

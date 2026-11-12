@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import { useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { Fragment, useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode, type RefObject } from "react";
-import { SHORT_SCROLL } from "./HeroCourseScene";
+import { SHORT_SCROLL } from "@/components/home/hero/HeroCourseScene";
 
 export type FrameSet = {
   id: string;

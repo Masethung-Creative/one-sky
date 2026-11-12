@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { MotionConfig, motion, useScroll, useSpring } from "motion/react";
-import GuideFrame from "./GuideFrame";
-import HashLanding from "./HashLanding";
-import { COURSE_URL } from "./HeroCourseScene";
-import { Reveal } from "./PageParts";
-import VisionFrame from "./VisionFrame";
+import GuideFrame from "@/components/home/sections/GuideFrame";
+import HashLanding from "@/components/home/sections/HashLanding";
+import { COURSE_URL } from "@/components/home/hero/HeroCourseScene";
+import { Reveal } from "@/components/pages/PageParts";
+import VisionFrame from "@/components/home/sections/VisionFrame";
 
 const MotionLink = motion.create(Link);
 

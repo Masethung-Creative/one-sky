@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import policies from "@/content/policies.json";
 import { COURSE_PARTS, FAQS, FORMS, GIVING_FAQS } from "@/content/site";
-import { Card, Dashboard, Faq, LeadForm, Reveal, ReviewsBoard } from "./PageParts";
+import { Card, Dashboard, Faq, LeadForm, Reveal, ReviewsBoard } from "@/components/pages/PageParts";
 
 type SitePage = { eyebrow: string; title: string; intro?: string; body: ReactNode };
 

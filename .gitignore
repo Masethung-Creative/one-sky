@@ -40,6 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
-.env*
+# editor settings
 *.code-workspace
+
+# original, uncompressed media kept on this computer only (the site uses the copies in public/)
+/media-source/

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Firefly, { type FireflyFlight } from "./Firefly";
+import Firefly, { type FireflyFlight } from "@/components/home/hero/Firefly";
 
 type Point = { x: number; y: number };
 type World = { spots: Point[]; air: { left: number; right: number; top: number; bottom: number }; pace: number; awake: () => boolean };

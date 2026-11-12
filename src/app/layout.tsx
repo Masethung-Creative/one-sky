@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Fredoka, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-import "./one-sky-hero.css";
-import "./site-header.css";
-import "./one-sky-sections.css";
-import SiteFooter from "@/components/SiteFooter";
-import SiteHeader from "@/components/SiteHeader";
+import "@/styles/globals.css";
+import "@/styles/one-sky-hero.css";
+import "@/styles/site-header.css";
+import "@/styles/one-sky-sections.css";
+import SiteFooter from "@/components/layout/SiteFooter";
+import SiteHeader from "@/components/layout/SiteHeader";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta-sans",
