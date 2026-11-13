@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
+/* One Sky design tokens. Every colour, shadow and curve in the site comes from here.
+   Illustration artwork (mascots, crew, step icons) keeps its own drawing colours. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Neutrals */
+  --white: #ffffff;
+  --bg: #f8fbff;
+  --ink: #14203d;          /* headings and body text */
+  --ink-2: #4a4870;        /* secondary text */
+  --muted: #6b6990;        /* captions, counters, hints */
+  --line: #e4e6f3;         /* card and divider borders */
+  --line-strong: #b9c6dc;  /* form field borders */
+
+  /* Brand purple */
+  --purple: #7b5cff;
+  --purple-deep: #5a3fd6;  /* hover on purple */
+  --purple-soft: #efeaff;  /* tinted backgrounds */
+
+  /* Brand yellow */
+  --yellow: #ffc93c;
+  --yellow-ink: #3b2a00;   /* text on yellow */
+  --yellow-soft: #fff4d1;  /* notices */
+  --gold: #d98a00;         /* star ratings */
+
+  /* Brand blue and sky */
+  --blue: #0453b5;         /* links */
+  --blue-deep: #03418f;    /* logo, pills */
+  --sky-top: #046ade;
+  --sky-low: #4aa3f5;
+  --sky-soft: #eaf4ff;     /* tinted sections and pills */
+  --sky-mist: #cfe8ff;     /* sparkles, cloud shade */
+  --footer: #06264f;
+  --footer-ink: #d7e6fb;
+  --night: #0b1424;        /* video player */
+  --night-sky: #101c56;    /* night scene */
+
+  /* Landscape */
+  --hill: #9ed455;
+  --treeline: #57a845;
+
+  /* Shadows share one blue tint */
+  --shadow-sm: 0 4px 14px -8px rgba(15, 60, 130, .35);
+  --shadow: 0 10px 30px -12px rgba(15, 60, 130, .22);
+  --shadow-card: 0 10px 30px rgba(15, 60, 130, .08);
+  --shadow-lg: 0 24px 50px -18px rgba(15, 60, 130, .32);
+
+  /* Type */
+  --font-body: var(--font-jakarta-sans), system-ui, sans-serif;
+  --font-brand: var(--font-fredoka), var(--font-jakarta-sans), sans-serif; /* logo wordmark only */
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-loop: cubic-bezier(.45, 0, .55, 1); /* back-and-forth idle loops */
+  --dur-fast: .3s;   /* colour and opacity */
+  --dur: .5s;        /* position and layout */
+
+  --focus: 0 0 0 3px var(--white), 0 0 0 6px var(--purple);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-white: var(--white);
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-purple: var(--purple);
+  --color-purple-deep: var(--purple-deep);
+  --color-purple-soft: var(--purple-soft);
+  --color-yellow: var(--yellow);
+  --color-blue: var(--blue);
+  --color-blue-deep: var(--blue-deep);
+  --color-sky: var(--sky-top);
+  --color-sky-soft: var(--sky-soft);
   --font-sans: var(--font-jakarta-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
 }

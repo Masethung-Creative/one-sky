@@ -1,20 +1,7 @@
 /* Layout: a clear blue sky filling the screen, centred white type, lime hills along the bottom, the children standing at the bottom right.
    Single-theme by choice: the hero is a daytime scene. */
 :root {
-  --bg: #f8fbff;
-  --ink: #0f0f0f;
-  --ink-2: #4a4870;
-  --line: #e4e6f3;
-  --purple: #7b5cff;
-  --yellow: #ffc93c;
-  --sky-top: #046ade;
-  --sky-low: #4aa3f5;
-  --hill: #9ed455;
-  --treeline: #57a845;
-  --font-body: var(--font-jakarta-sans), system-ui, sans-serif;
-  --font-brand: var(--font-fredoka), "Trebuchet MS", sans-serif;
-  --ease: cubic-bezier(.2,.8,.2,1);
-  --focus: 0 0 0 3px #fff, 0 0 0 6px var(--purple);
+  /* Colours, fonts and easing live in globals.css. These are hero layout values only. */
   --header: 69px;
   --ground: max(190px, 22.9vw);
   --gutter-l: max(16px, env(safe-area-inset-left, 0px));
@@ -22,24 +9,24 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); }
+body { margin: 0; }
 a:focus-visible { outline: none; box-shadow: var(--focus); }
 
 .hero {
   position: relative; overflow: hidden; display: flex;
   min-height: calc(100svh - var(--header));
-  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-low) 81%);
+  background: var(--sky-top);
 }
 .hero-inner {
   position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: clamp(14px, 2.4svh, 24px); text-align: center; color: #fff;
-  padding-block: clamp(44px, 7svh, 72px) calc(var(--ground) * .52);
+  gap: clamp(12px, 2.4svh, 24px); text-align: center; color: var(--white);
+  padding-block: clamp(40px, 7svh, 64px) calc(var(--ground) * .52);
   padding-left: var(--gutter-l); padding-right: var(--gutter-r);
 }
 .title-wrap { position: relative; max-width: 100%; }
 .hero h1 {
-  margin: 0; color: #fff; font-weight: 700;
-  font-size: clamp(2.6rem, 6vw, 5.5rem); line-height: 1; letter-spacing: -.05em;
+  margin: 0; color: var(--white); font-weight: 700;
+  font-size: clamp(2.25rem, 6vw, 6rem); line-height: 1; letter-spacing: -.05em;
   text-wrap: balance;
 }
 .hero h1 .ln { display: block; }
@@ -47,38 +34,38 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 .title-sun { position: absolute; top: -52px; right: -44px; width: clamp(46px, 6vw, 86px); height: auto; overflow: visible; }
 
 .sub {
-  margin: 0; font-weight: 700; font-size: clamp(1.1rem, 1.9vw, 1.5rem); line-height: 1.25; letter-spacing: -.03em;
+  margin: 0; font-weight: 700; font-size: clamp(1.125rem, 1.9vw, 1.5rem); line-height: 1.25; letter-spacing: -.03em;
   animation: heroTiltIn .7s var(--ease) .55s both;
 }
 .btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 24px; animation: heroRise .6s var(--ease) .7s both; }
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 12px 30px;
-  border-radius: 64px; background: #fff; color: var(--ink); font-weight: 700; font-size: 1.08rem; letter-spacing: -.02em; line-height: 1.2; text-decoration: none;
-  transition: background-color .2s var(--ease);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; padding: 12px 32px;
+  border-radius: 9999px; background: var(--white); color: var(--ink); font-weight: 700; font-size: 1.125rem; letter-spacing: -.02em; line-height: 1.2; text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease);
 }
 .btn:hover { background: var(--yellow); }
 .btn svg { width: 18px; height: 18px; flex: none; }
-.note { margin: 0; max-width: 62ch; padding: 6px 16px; border-radius: 999px; background: rgba(3,50,120,.45); font-weight: 700; font-size: 1rem; line-height: 1.35; letter-spacing: -.02em; animation: heroRise .6s var(--ease) .85s both; }
+.note { margin: 0; max-width: 62ch; padding: 4px 16px; border-radius: 9999px; background: color-mix(in srgb, var(--blue-deep) 45%, transparent); font-weight: 700; font-size: 1rem; line-height: 1.35; letter-spacing: -.02em; animation: heroRise .6s var(--ease) .85s both; }
 
 .scroll-cue {
-  position: absolute; left: 50%; bottom: 16px; margin-left: -23px;
-  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
-  background: #fff; color: var(--ink); text-decoration: none;
-  animation: heroBounce 2.2s ease-in-out 1.4s infinite;
+  position: absolute; left: 50%; bottom: 16px; margin-left: -24px;
+  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+  background: var(--white); color: var(--ink); text-decoration: none;
+  animation: heroBounce 2.2s var(--ease-loop) 1.4s infinite;
 }
 .scroll-cue svg { width: 20px; height: 20px; }
 
 .cloud, .sparkle, .ground, .kids { position: absolute; pointer-events: none; display: block; }
-.cloud { z-index: 1; height: auto; fill: #fff; opacity: .45; }
+.cloud { z-index: 1; height: auto; fill: var(--white); opacity: .45; }
 .cloud-a { top: 13%; left: -2%; width: clamp(110px, 12vw, 180px); }
 .cloud-b { top: 13%; right: -2%; width: clamp(150px, 16vw, 250px); }
 .sparkle { z-index: 1; height: auto; overflow: visible; }
-.sparkle path { animation: artTwinkle 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-.s1 { top: 44%; left: 25%; width: 26px; } .s1 path { fill: #fff; }
-.s2 { top: 52%; left: 21%; width: 38px; animation-delay: .6s; } .s2 path { fill: #cfe8ff; animation-delay: .6s; }
+.sparkle path { animation: artTwinkle 3s var(--ease-loop) infinite; transform-box: fill-box; transform-origin: center; }
+.s1 { top: 44%; left: 25%; width: 26px; } .s1 path { fill: var(--white); }
+.s2 { top: 52%; left: 21%; width: 38px; animation-delay: .6s; } .s2 path { fill: var(--sky-mist); animation-delay: .6s; }
 .s3 { top: 65%; left: 26%; width: 22px; } .s3 path { fill: var(--yellow); animation-delay: 1.2s; }
-.s4 { top: 46%; right: 25%; width: 24px; } .s4 path { fill: #cfe8ff; animation-delay: .9s; }
-.s5 { top: 53%; right: 21%; width: 36px; } .s5 path { fill: #fff; animation-delay: 1.6s; }
+.s4 { top: 46%; right: 25%; width: 24px; } .s4 path { fill: var(--sky-mist); animation-delay: .9s; }
+.s5 { top: 53%; right: 21%; width: 36px; } .s5 path { fill: var(--white); animation-delay: 1.6s; }
 .s6 { top: 66%; right: 29%; width: 34px; } .s6 path { fill: var(--yellow); animation-delay: .3s; }
 
 .ground { left: 0; right: 0; bottom: 0; width: 100%; height: var(--ground); z-index: 1; }
@@ -89,7 +76,7 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 .title-sun { z-index: 1; }
 .plane { position: absolute; z-index: 2; pointer-events: none; left: 0; top: 14%; width: clamp(98px, 12vw, 183px); animation: planeFly 28s linear 2s infinite both; }
 .plane svg { display: block; width: 100%; height: auto; overflow: visible; }
-.plane-bob { animation: planeBob 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.plane-bob { animation: planeBob 5s var(--ease-loop) infinite; transform-box: fill-box; transform-origin: center; }
 .prop { animation: propSpin .16s linear infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes planeFly { 0% { translate: -100% 0; } 64%, 100% { translate: 100vw 0; } }
 @keyframes planeBob { 0%, 100% { translate: 0 8px; rotate: 2deg; } 50% { translate: 0 -10px; rotate: -3deg; } }
@@ -98,7 +85,7 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 .mascot-blink { animation: heroBlink 5s linear infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes heroBlink { 0%, 94%, 100% { scale: 1 1; } 97% { scale: 1 .08; } }
 
-.art-wave { animation: artWave 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+.art-wave { animation: artWave 2.6s var(--ease-loop) infinite; transform-box: fill-box; transform-origin: 50% 100%; }
 @keyframes artTwinkle { 0%, to { scale: 1; opacity: 1; } 50% { scale: .7; opacity: .75; } }
 @keyframes artWave { 0%, 60%, to { rotate: 0deg; } 15% { rotate: 14deg; } 30% { rotate: -8deg; } 45% { rotate: 10deg; } }
 @keyframes heroWordUp { from { opacity: 0; translate: 0 .55em; } to { opacity: 1; translate: 0 0; } }
@@ -107,8 +94,8 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
 @keyframes heroBounce { 0%, 100% { translate: 0 0; } 50% { translate: 0 7px; } }
 
 /* Stand-in for the next section, so the arrow has somewhere to go. */
-.next { padding-block: 56px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); text-align: center; }
-.next h2 { margin: 0 0 8px; font-weight: 700; font-size: 2rem; letter-spacing: -.03em; }
+.next { padding-block: 48px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); text-align: center; }
+.next h2 { margin: 0 0 8px; font-weight: 700; font-size: 1.875rem; letter-spacing: -.03em; }
 .next p { margin: 0 auto; max-width: 56ch; color: var(--ink-2); line-height: 1.6; }
 
 @media (max-width: 1100px) {
@@ -129,7 +116,7 @@ a:focus-visible { outline: none; box-shadow: var(--focus); }
   .btn { width: 100%; }
 }
 @media (min-width: 1101px) and (max-height: 720px) {
-  .hero h1 { font-size: clamp(2.6rem, 5.2vw, 4.5rem); }
+  .hero h1 { font-size: clamp(2.25rem, 5.2vw, 4.5rem); }
   .btn { min-height: 48px; padding-block: 8px; }
   .title-sun { top: -34px; width: 60px; }
   .kids { width: clamp(380px, 31vw, 480px); }

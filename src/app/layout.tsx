@@ -10,7 +10,7 @@ import SiteHeader from "@/components/layout/SiteHeader";
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta-sans",
   subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: ["500", "600", "700"],
 });
 
 const fredoka = Fredoka({

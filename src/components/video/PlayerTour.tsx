@@ -95,7 +95,7 @@ export default function PlayerTour({ steps, box, onDone }: {
         {spot && (
           <span
             className={styles.ring}
-            style={{ left: spot.left - 4, top: spot.top - 4, width: spot.width + 8, height: spot.height + 8 }}
+            style={{ transform: `translate(${spot.left - 4}px, ${spot.top - 4}px)`, width: spot.width + 8, height: spot.height + 8 }}
           />
         )}
       </div>

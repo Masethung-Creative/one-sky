@@ -189,6 +189,7 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
   // Full screen is left alone, because Safari moves the page while it opens and closes.
   useEffect(() => {
     let later = 0;
+    let frame = 0;
     const check = () => {
       const el = video.current as SafariVideo | null;
       if (!el || el.paused || !box.current) return;
@@ -197,13 +198,14 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
     };
     // Checks again just after scrolling stops, once the scene has caught up with a quick jump.
     const onScroll = () => {
-      check();
+      if (!frame) frame = requestAnimationFrame(() => { frame = 0; check(); });
       clearTimeout(later);
       later = window.setTimeout(check, 200);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
       clearTimeout(later);
     };
   }, []);
