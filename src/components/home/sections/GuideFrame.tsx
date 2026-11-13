@@ -16,7 +16,15 @@ const CHAPTER_ONE = {
     { height: 720, src: "/videos/chapter-1/chapter-1-720p.mp4" },
     { height: 480, src: "/videos/chapter-1/chapter-1-480p.mp4" },
   ],
-  captions: [{ lang: "en", label: "English", src: "/videos/chapter-1/captions-en.vtt" }],
+  // Each language is shown in its own script, the same way as the site language menu.
+  captions: [
+    { lang: "en", label: "English", src: "/videos/chapter-1/captions-en.vtt" },
+    { lang: "hi", label: "हिन्दी", src: "/videos/chapter-1/captions-hi.vtt" },
+    { lang: "kn", label: "ಕನ್ನಡ", src: "/videos/chapter-1/captions-kn.vtt" },
+    { lang: "ml", label: "മലയാളം", src: "/videos/chapter-1/captions-ml.vtt" },
+    { lang: "ta", label: "தமிழ்", src: "/videos/chapter-1/captions-ta.vtt" },
+    { lang: "te", label: "తెలుగు", src: "/videos/chapter-1/captions-te.vtt" },
+  ],
 };
 
 const AUDIENCES = [
@@ -39,7 +47,7 @@ const SETS: FrameSet[] = [
         <div>
           {head}
           <p className="lead">Chapter 1 of <em>Ajji, This Is for You</em>: Nila finds Ajji’s faded green notebook and an unfinished memory. Should they ask AI to finish it, or ask Ajji?</p>
-          <p className="fine">About 1 minute · English captions</p>
+          <p className="fine">About 1 minute · Captions in English, Hindi, Kannada, Malayalam, Tamil and Telugu</p>
           <Link className="sec-btn" href={COURSE_URL}>View the full course</Link>
         </div>
       </div>

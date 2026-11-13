@@ -284,7 +284,8 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
 
       {waiting && playing && <span className={styles.spinner} role="status" aria-label="Loading" />}
 
-      {cue && <div className={styles.caption} aria-live="off"><span>{cue}</span></div>}
+      {/* translate="no" stops the site's Google Translate from rewriting captions that are already in the chosen language. */}
+      {cue && <div className={styles.caption} aria-live="off" translate="no" lang={captionLang ?? undefined}><span>{cue}</span></div>}
 
       <div className={styles.controls} translate="no">
         <input
