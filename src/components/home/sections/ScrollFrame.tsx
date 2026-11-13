@@ -25,7 +25,7 @@ const LEAD_IN = 0.7;
 const TOUCH_PACE = 0.55;
 // The step icons rest here, in seconds of their own animation, with everything in place.
 const ICON_FINISHED = 2.5;
-const BODY_ITEMS = ".lead, .goal, .text-link, .step, .card, .preview-screen, .fine, .sec-btn, .faq-list, .why-decor";
+const BODY_ITEMS = ".lead, .goal, .text-link, .step, .card, .preview-screen, .multi-lang, .fine, .sec-btn, .faq-list, .why-decor";
 
 function FramePanel({ set, panelRef }: { set: FrameSet; panelRef: RefObject<HTMLDivElement | null> }) {
   const head = (

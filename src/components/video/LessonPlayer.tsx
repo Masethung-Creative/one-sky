@@ -52,11 +52,25 @@ function pickAutoHeight(sources: VideoSource[], playerWidth: number) {
   return sharp ? sharp.height : sources[0].height;
 }
 
+// Safari (Mac, iPad and iPhone) still uses older "webkit" names for full screen, so both are checked.
+type SafariDocument = Document & { webkitFullscreenElement?: Element | null; webkitFullscreenEnabled?: boolean; webkitExitFullscreen?: () => void };
+type SafariBox = HTMLDivElement & { webkitRequestFullscreen?: () => void };
+type SafariVideo = HTMLVideoElement & { webkitEnterFullscreen?: () => void; webkitDisplayingFullscreen?: boolean };
+
+function fullscreenElement() {
+  const doc = document as SafariDocument;
+  return doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+}
+
 export default function LessonPlayer({ title, poster, sources, captions, captionsFromLocation = false }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const hideTimer = useRef(0);
   const shownHeight = useRef(0);
+  // While full screen is starting, on, or just ended, the page may jump. These stop that from pausing the video.
+  const inFullscreen = useRef(false);
+  const releaseTimer = useRef(0);
+  const savedScroll = useRef(0);
 
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -101,21 +115,7 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
       track.mode = "disabled";
       track.addEventListener("cuechange", onCueChange);
     });
-    // iPhone fullscreen uses the system player, so its own captions take over there.
-    const onNativeFullscreen = (showing: boolean) => () => {
-      tracks.forEach((track) => {
-        if (track.mode !== "disabled") track.mode = showing ? "showing" : "hidden";
-      });
-    };
-    const begin = onNativeFullscreen(true);
-    const end = onNativeFullscreen(false);
-    el.addEventListener("webkitbeginfullscreen", begin);
-    el.addEventListener("webkitendfullscreen", end);
-    return () => {
-      tracks.forEach((track) => track.removeEventListener("cuechange", onCueChange));
-      el.removeEventListener("webkitbeginfullscreen", begin);
-      el.removeEventListener("webkitendfullscreen", end);
-    };
+    return () => tracks.forEach((track) => track.removeEventListener("cuechange", onCueChange));
   }, []);
 
   // Shows one caption language, or none.
@@ -143,20 +143,69 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Keeps track of full screen in every browser. When only the video is full screen (Apple's own player on
+  // iPhone, or a fallback on Mac), that player draws the chosen captions itself, so they are switched over to it.
   useEffect(() => {
-    const onChange = () => setFullscreen(document.fullscreenElement === box.current);
+    const el = video.current as SafariVideo | null;
+    if (!el) return;
+    const systemCaptions = (on: boolean) => {
+      Array.from(el.textTracks).forEach((track) => {
+        if (track.mode !== "disabled") track.mode = on ? "showing" : "hidden";
+      });
+    };
+    const entered = () => {
+      clearTimeout(releaseTimer.current);
+      inFullscreen.current = true;
+    };
+    // Puts the page back where the visitor was, then lets the scroll pause work again once things settle.
+    const left = () => {
+      requestAnimationFrame(() => window.scrollTo(0, savedScroll.current));
+      clearTimeout(releaseTimer.current);
+      releaseTimer.current = window.setTimeout(() => { inFullscreen.current = false; }, 1000);
+    };
+    const onChange = () => {
+      const current = fullscreenElement();
+      setFullscreen(current === box.current);
+      systemCaptions(current === el);
+      if (current) entered();
+      else left();
+    };
+    const onAppleBegin = () => { entered(); systemCaptions(true); };
+    const onAppleEnd = () => { systemCaptions(false); left(); };
     document.addEventListener("fullscreenchange", onChange);
-    return () => document.removeEventListener("fullscreenchange", onChange);
+    document.addEventListener("webkitfullscreenchange", onChange);
+    el.addEventListener("webkitbeginfullscreen", onAppleBegin);
+    el.addEventListener("webkitendfullscreen", onAppleEnd);
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+      document.removeEventListener("webkitfullscreenchange", onChange);
+      el.removeEventListener("webkitbeginfullscreen", onAppleBegin);
+      el.removeEventListener("webkitendfullscreen", onAppleEnd);
+      clearTimeout(releaseTimer.current);
+    };
   }, []);
 
   // The preview sits in a scrolling scene. Once the visitor scrolls on and it hides, the video pauses.
+  // Full screen is left alone, because Safari moves the page while it opens and closes.
   useEffect(() => {
+    let later = 0;
+    const check = () => {
+      const el = video.current as SafariVideo | null;
+      if (!el || el.paused || !box.current) return;
+      if (inFullscreen.current || fullscreenElement() || el.webkitDisplayingFullscreen) return;
+      if (getComputedStyle(box.current).visibility === "hidden") el.pause();
+    };
+    // Checks again just after scrolling stops, once the scene has caught up with a quick jump.
     const onScroll = () => {
-      const el = video.current;
-      if (el && !el.paused && box.current && getComputedStyle(box.current).visibility === "hidden") el.pause();
+      check();
+      clearTimeout(later);
+      later = window.setTimeout(check, 200);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(later);
+    };
   }, []);
 
   // Menus close on a click outside the player or on Escape.
@@ -190,7 +239,7 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
       return;
     }
     if (el.paused) {
-      el.play();
+      playVideo();
       setStarted(true);
     } else {
       el.pause();
@@ -222,7 +271,7 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
   function endTour() {
     setTouring(false);
     const el = video.current;
-    if (el?.paused) el.play();
+    if (el?.paused) playVideo();
     wakeControls();
   }
 
@@ -253,15 +302,63 @@ export default function LessonPlayer({ title, poster, sources, captions, caption
     el.addEventListener("loadedmetadata", () => {
       el.currentTime = at;
       el.playbackRate = speed;
-      if (wasPlaying) el.play();
+      if (wasPlaying) playVideo();
     }, { once: true });
   }
 
+  // If the browser refuses to play (Safari can), the big play button simply shows again.
+  function playVideo() {
+    const el = video.current;
+    if (!el) return;
+    el.play()?.catch(() => {
+      setPlaying(false);
+      setControlsShown(true);
+    });
+  }
+
+  // Our own player goes full screen where the browser allows it (Chrome, Edge, Mac Safari, iPad).
+  // iPhone only lets the video itself go full screen, in Apple's player, so that is the fallback.
   function toggleFullscreen() {
-    const el = video.current as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null;
-    if (document.fullscreenElement) document.exitFullscreen();
-    else if (box.current?.requestFullscreen) box.current.requestFullscreen();
-    else el?.webkitEnterFullscreen?.();
+    const doc = document as SafariDocument;
+    const el = video.current as SafariVideo | null;
+    const player = box.current as SafariBox | null;
+    if (!el || !player) return;
+    if (fullscreenElement()) {
+      if (doc.exitFullscreen) doc.exitFullscreen().catch(() => {});
+      else doc.webkitExitFullscreen?.();
+      return;
+    }
+    savedScroll.current = window.scrollY;
+    clearTimeout(releaseTimer.current);
+    inFullscreen.current = true;
+    const videoOnly = () => {
+      if (el.webkitEnterFullscreen) {
+        const open = () => {
+          try {
+            el.webkitEnterFullscreen!();
+          } catch {
+            inFullscreen.current = false;
+          }
+        };
+        // Apple's player needs the video's first part loaded. iPhones only load it once play is pressed.
+        if (el.readyState >= 1) open();
+        else {
+          el.addEventListener("loadedmetadata", open, { once: true });
+          playVideo();
+        }
+      } else if (el.requestFullscreen) {
+        el.requestFullscreen().catch(() => { inFullscreen.current = false; });
+      } else {
+        inFullscreen.current = false;
+      }
+    };
+    // If full screen never actually opens, the scroll pause goes back to normal.
+    releaseTimer.current = window.setTimeout(() => {
+      if (!fullscreenElement() && !el.webkitDisplayingFullscreen) inFullscreen.current = false;
+    }, 3000);
+    if (doc.fullscreenEnabled && player.requestFullscreen) player.requestFullscreen().catch(videoOnly);
+    else if (doc.webkitFullscreenEnabled && player.webkitRequestFullscreen) player.webkitRequestFullscreen();
+    else videoOnly();
   }
 
   function onKeyDown(event: React.KeyboardEvent) {

@@ -47,7 +47,20 @@ const SETS: FrameSet[] = [
         <div>
           {head}
           <p className="lead">Chapter 1 of <em>Ajji, This Is for You</em>: Nila finds Ajji’s faded green notebook and an unfinished memory. Should they ask AI to finish it, or ask Ajji?</p>
-          <p className="fine">About 1 minute · Captions in English, Hindi, Kannada, Malayalam, Tamil and Telugu</p>
+          <div className="multi-lang">
+            <div className="multi-lang-head">
+              <span className="multi-lang-icon" aria-hidden="true">CC</span>
+              <h3>Multilingual captions</h3>
+              <span className="multi-lang-count">{CHAPTER_ONE.captions.length} languages</span>
+            </div>
+            <p>Watch in English with captions in your own language. Switch any time from the CC button.</p>
+            <ul className="multi-lang-list">
+              {CHAPTER_ONE.captions.map(({ lang, label }) => (
+                <li key={lang} lang={lang}>{label}</li>
+              ))}
+            </ul>
+          </div>
+          <p className="fine">About 1 minute · Chapter 1 free to watch</p>
           <Link className="sec-btn" href={COURSE_URL}>View the full course</Link>
         </div>
       </div>
