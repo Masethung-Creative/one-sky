@@ -1,0 +1,65 @@
+/* Styles for PlayerTour.tsx. Spacing follows a 4px scale. */
+
+.tour { position: absolute; inset: 0; z-index: 5; }
+
+/* Dims the player, leaving a lit ring around the control being explained. */
+.shade { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; }
+.tour { border-radius: inherit; }
+.ring {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px #ffc93c, 0 0 0 9999px rgba(4, 12, 28, .62);
+  transition: left .3s var(--ease), top .3s var(--ease), width .3s var(--ease), height .3s var(--ease);
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  color: #14203d;
+  box-shadow: 0 16px 40px rgba(4, 12, 28, .35);
+  text-align: left;
+  user-select: text;
+}
+/* The little pointer under the bubble, aimed at the highlighted control. */
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(var(--arrow) - 8px);
+  border: 8px solid transparent;
+  border-top-color: #fff;
+}
+
+.head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.title { flex: 1; margin: 0; font-size: 1rem; font-weight: 800; line-height: 24px; }
+.count { color: #5b6478; font-size: .75rem; font-weight: 700; }
+.close { display: grid; place-items: center; width: 28px; height: 28px; margin: -4px -8px -4px 0; padding: 0; border: 0; border-radius: 8px; background: none; color: #5b6478; cursor: pointer; }
+.close:hover { background: #eef2fa; color: #14203d; }
+
+.text { margin: 0 0 12px; color: #2b3550; font-size: .875rem; line-height: 20px; }
+
+.dontShow { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #2b3550; font-size: .8125rem; font-weight: 700; cursor: pointer; }
+.dontShow input { width: 16px; height: 16px; margin: 0; accent-color: #7b5cff; cursor: pointer; }
+
+.actions { display: flex; align-items: center; gap: 8px; }
+.spacer { flex: 1; }
+.skip, .back, .next {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: .8125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.skip { margin-left: -12px; border: 0; background: none; color: #5b6478; }
+.skip:hover { color: #14203d; text-decoration: underline; }
+.back { border: 2px solid #dfe5f2; background: #fff; color: #14203d; }
+.next { border: 0; background: #7b5cff; color: #fff; padding: 0 16px; }
+.next:hover { background: #6a48ff; }
+.close:focus-visible, .skip:focus-visible, .back:focus-visible, .next:focus-visible, .dontShow input:focus-visible { outline: 3px solid #ffc93c; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .ring { transition: none; } }

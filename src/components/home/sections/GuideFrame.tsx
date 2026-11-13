@@ -42,7 +42,7 @@ const SETS: FrameSet[] = [
     body: (head) => (
       <div className="preview-grid">
         <div className="preview-screen">
-          <LessonPlayer {...CHAPTER_ONE} />
+          <LessonPlayer {...CHAPTER_ONE} captionsFromLocation />
         </div>
         <div>
           {head}

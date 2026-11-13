@@ -2,11 +2,16 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./LessonPlayer.module.css";
+import PlayerTour, { tourIsTurnedOff, type TourStep } from "./PlayerTour";
+import { saveCaptionChoice, startingCaption } from "./regionCaptions";
 
 /*
  * A video player for lesson previews.
  * It has play/pause, a seek bar, volume, captions (CC) with a language menu,
  * a settings menu for speed and quality, fullscreen and keyboard shortcuts.
+ *
+ * Captions start in the language that suits the visitor's state (see regionCaptions.ts), unless they chose one before.
+ * A short tour of the buttons (PlayerTour.tsx) shows each time the video is started, until the visitor turns it off.
  *
  * Keyboard: Space or K plays and pauses, the arrows skip 5 seconds,
  * M mutes, C turns English captions on and off, F goes fullscreen.
@@ -17,6 +22,8 @@ export type CaptionTrack = { lang: string; label: string; src: string };
 
 type Props = {
   title: string;
+  // Start captions in the visitor's regional language.
+  captionsFromLocation?: boolean;
   poster: string;
   // Largest first, for example 1080p, 720p, 480p.
   sources: VideoSource[];
@@ -45,7 +52,7 @@ function pickAutoHeight(sources: VideoSource[], playerWidth: number) {
   return sharp ? sharp.height : sources[0].height;
 }
 
-export default function LessonPlayer({ title, poster, sources, captions }: Props) {
+export default function LessonPlayer({ title, poster, sources, captions, captionsFromLocation = false }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const hideTimer = useRef(0);
@@ -67,6 +74,7 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
   const [menu, setMenu] = useState<Menu>(null);
   const [controlsShown, setControlsShown] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [touring, setTouring] = useState(false);
 
   // Loads the right size once the player knows how wide it is. Only a small header is fetched until play.
   useEffect(() => {
@@ -110,6 +118,31 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
     };
   }, []);
 
+  // Shows one caption language, or none.
+  function showCaptions(lang: string | null) {
+    const el = video.current;
+    if (!el) return;
+    Array.from(el.textTracks).forEach((track) => {
+      track.mode = track.language === lang ? "hidden" : "disabled";
+    });
+    setCaptionLang(lang);
+    setCue("");
+  }
+
+  // Turns captions on in the visitor's saved or regional language. This never changes the site's own language.
+  useEffect(() => {
+    if (!captionsFromLocation) return;
+    let cancelled = false;
+    startingCaption(captions.map((track) => track.lang)).then((lang) => {
+      if (!cancelled && lang) showCaptions(lang);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Runs once when the player appears.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const onChange = () => setFullscreen(document.fullscreenElement === box.current);
     document.addEventListener("fullscreenchange", onChange);
@@ -149,6 +182,13 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
   function togglePlay() {
     const el = video.current;
     if (!el) return;
+    // Starting the video shows the tour first, unless the visitor turned it off.
+    if (!started && !tourIsTurnedOff()) {
+      setStarted(true);
+      setMenu(null);
+      setTouring(true);
+      return;
+    }
     if (el.paused) {
       el.play();
       setStarted(true);
@@ -172,15 +212,24 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
     if (!el.muted && el.volume === 0) el.volume = 0.5;
   }
 
+  // A choice made in the CC menu is remembered, so it wins over the location next time.
   function chooseCaptions(lang: string | null) {
-    const el = video.current;
-    if (!el) return;
-    Array.from(el.textTracks).forEach((track) => {
-      track.mode = track.language === lang ? "hidden" : "disabled";
-    });
-    setCaptionLang(lang);
-    setCue("");
+    showCaptions(lang);
+    saveCaptionChoice(lang);
     setMenu(null);
+  }
+
+  function endTour() {
+    setTouring(false);
+    const el = video.current;
+    if (el?.paused) el.play();
+    wakeControls();
+  }
+
+  function replayTour() {
+    video.current?.pause();
+    setMenu(null);
+    setTouring(true);
   }
 
   function chooseSpeed(value: number) {
@@ -216,7 +265,7 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
   }
 
   function onKeyDown(event: React.KeyboardEvent) {
-    if ((event.target as HTMLElement).closest("[role='menu']")) return;
+    if (touring || (event.target as HTMLElement).closest("[role='menu']")) return;
     const key = event.key.toLowerCase();
     if (key === " " || key === "k") {
       if ((event.target as HTMLElement).tagName === "BUTTON" && key === " ") return;
@@ -234,7 +283,18 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
   const played = duration ? (time / duration) * 100 : 0;
   const loaded = duration ? (buffered / duration) * 100 : 0;
   // Before the first play only the cover and the big play button show.
-  const showControls = started && (controlsShown || !playing || menu !== null);
+  const showControls = started && (touring || controlsShown || !playing || menu !== null);
+  const captionName = captions.find((track) => track.lang === captionLang)?.label;
+  const tourSteps: TourStep[] = [
+    {
+      target: '[aria-label="Captions"]',
+      title: "Captions",
+      text: `Pick a language for the words on screen.${captionName ? ` We chose ${captionName} for you.` : ""}`,
+    },
+    { target: '[aria-label="Settings"]', title: "Settings", text: "Change the speed, or pick a lower quality to save mobile data." },
+    { target: '[aria-label="Seek"]', title: "Move around", text: "Drag the bar to jump to any moment in the story." },
+    { target: '[aria-label="Full screen"]', title: "Full screen", text: "Watch it big. Press Start video when you're ready." },
+  ];
 
   return (
     <div
@@ -276,7 +336,7 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
         </div>
       )}
 
-      {(!playing || !started) && (
+      {(!playing || !started) && !touring && (
         <button type="button" className={styles.bigPlay} onClick={togglePlay} aria-label={`Play ${title}`}>
           <Icon name="play" />
         </button>
@@ -388,6 +448,7 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
                     onClick={() => setMenu("captions")}
                   />
                 )}
+                <MenuLink label="Player tour" value="Show" onClick={replayTour} />
               </MenuPanel>
             )}
             {menu === "speed" && (
@@ -416,6 +477,8 @@ export default function LessonPlayer({ title, poster, sources, captions }: Props
           </button>
         </div>
       </div>
+
+      {touring && <PlayerTour steps={tourSteps} box={box} onDone={endTour} />}
     </div>
   );
 }
