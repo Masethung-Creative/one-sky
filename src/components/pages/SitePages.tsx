@@ -21,8 +21,8 @@ function FormSection({ children }: { children: ReactNode }) {
 const CONTACT_DETAILS = (
   <Reveal className="card contact-card">
     <h2>Contact details</h2>
-    <p><b>Phone</b> <a href="tel:6362719956">6362719956</a></p>
-    <p><b>Email</b> <a href="mailto:akash.s@sfjbs.com">akash.s@sfjbs.com</a></p>
+    <p><b>Phone</b> <a href="tel:+917975291366">+91 79752 91366</a></p>
+    <p><b>Email</b> <a href="mailto:founder@onesky.education">founder@onesky.education</a></p>
     <p><b>Business Address</b> Unit 2, B Block, 4th Floor, Uma Shree Dream World, Kudlu Gate, Bengaluru, Karnataka 560068</p>
   </Reveal>
 );
